@@ -1,4 +1,4 @@
-.yarn/*
+.yarn/
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
@@ -11,3 +11,10 @@
 
 #!.yarn/cache
 .pnp.*
+node_modules
+
+# This dir is the built output when running `yarn build`
+.next
+
+# Temporary
+scaffold_devjourneydocs.sh

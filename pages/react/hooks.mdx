@@ -1,0 +1,217 @@
+import { Callout } from 'nextra/components'
+
+# React Hooks
+
+React Hooks are functions that allow you to "hook into" React state and lifecycle features from function components. Hooks were introduced in React 16.8 to enable developers to use state and other React features without writing a class.
+
+## Why Hooks?
+
+Hooks solve several problems in React:
+- Reusing stateful logic between components without changing component hierarchy
+- Splitting complex components into smaller functions based on related pieces
+- Using React features without classes
+
+<Callout emoji="💡">
+  Hooks let you always use functions instead of having to switch between functions, classes, higher-order components, and render props.
+</Callout>
+
+## Rules of Hooks
+
+1. Only call Hooks at the top level of your React function components.
+2. Don't call Hooks inside loops, conditions, or nested functions.
+
+## Basic Hooks
+
+### useState
+
+The `useState` hook lets you add state to functional components.
+
+```jsx
+import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+```
+
+### useEffect
+
+The `useEffect` hook lets you perform side effects in function components. It serves the same purpose as `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` in React classes.
+
+```jsx
+import { useState, useEffect } from 'react';
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = `You clicked ${count} times`;
+  }, [count]); // Only re-run the effect if count changes
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+```
+
+### useContext
+
+The `useContext` hook lets you subscribe to React context without introducing nesting.
+
+```jsx
+import { useContext } from 'react';
+import { ThemeContext } from './ThemeContext';
+
+function ThemedButton() {
+  const theme = useContext(ThemeContext);
+  return (
+    <button style={{ background: theme.background, color: theme.foreground }}>
+      I am styled by theme context!
+    </button>
+  );
+}
+```
+
+## Additional Hooks
+
+### useReducer
+
+The `useReducer` hook is an alternative to `useState` for complex state logic. It's preferable when you have complex state logic that involves multiple sub-values or when the next state depends on the previous one.
+
+```jsx
+import { useReducer } from 'react';
+
+const initialState = {count: 0};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return {count: state.count + 1};
+    case 'decrement':
+      return {count: state.count - 1};
+    default:
+      throw new Error();
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+      <button onClick={() => dispatch({type: 'increment'})}>+</button>
+    </>
+  );
+}
+```
+
+### useCallback
+
+The `useCallback` hook returns a memoized version of the callback that only changes if one of the dependencies has changed. This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders.
+
+```jsx
+import { useCallback, useState } from 'react';
+
+function ParentComponent() {
+  const [count, setCount] = useState(0);
+
+  const incrementCount = useCallback(() => {
+    setCount((prevCount) => prevCount + 1);
+  }, []);
+
+  return <ChildComponent onIncrement={incrementCount} />;
+}
+```
+
+### useMemo
+
+The `useMemo` hook returns a memoized value. Use it when you have expensive computations that you don't want to re-run on every render unless certain dependencies change.
+
+```jsx
+import { useMemo, useState } from 'react';
+
+function ExpensiveComputation({ a, b }) {
+  const result = useMemo(() => {
+    // Imagine this is a very expensive computation
+    return a * b;
+  }, [a, b]); // Only re-compute if a or b changes
+
+  return <div>Result: {result}</div>;
+}
+```
+
+### useRef
+
+The `useRef` hook creates a mutable ref object whose `.current` property is initialized to the passed argument. It's commonly used to access DOM elements directly.
+
+```jsx
+import { useRef, useEffect } from 'react';
+
+function TextInputWithFocusButton() {
+  const inputEl = useRef(null);
+  
+  const onButtonClick = () => {
+    // `current` points to the mounted text input element
+    inputEl.current.focus();
+  };
+  
+  return (
+    <>
+      <input ref={inputEl} type="text" />
+      <button onClick={onButtonClick}>Focus the input</button>
+    </>
+  );
+}
+```
+
+## Custom Hooks
+
+Custom Hooks let you extract component logic into reusable functions. A custom Hook is a JavaScript function whose name starts with "use" and that may call other Hooks.
+
+```jsx
+import { useState, useEffect } from 'react';
+
+function useWindowWidth() {
+  const [width, setWidth] = useState(window.innerWidth);
+  
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  
+  return width;
+}
+
+function ScreenWidth() {
+  const width = useWindowWidth();
+  return <div>Screen width is {width}</div>;
+}
+```
+
+<Callout emoji="🚀">
+  Custom Hooks are a powerful way to share stateful logic between components. They allow you to reuse non-visual logic easily, making your code more modular and easier to test.
+</Callout>
+
+## Conclusion
+
+React Hooks provide a more direct way to use React's features and allow for better code reuse and organization. They help simplify complex components, make it easier to reuse stateful logic, and provide a more straightforward way to manage side effects in your components.
+
+As you continue your React journey, practice using these hooks in your projects. Start with the basic hooks like `useState` and `useEffect`, and gradually incorporate the others as you encounter more complex scenarios in your applications.

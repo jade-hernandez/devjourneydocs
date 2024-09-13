@@ -1,0 +1,142 @@
+import { Callout } from 'nextra/components'
+
+# React State
+
+State is a crucial concept in React that allows components to manage and store data that can change over time. Understanding state is essential for building dynamic and interactive React applications.
+
+## What is State?
+
+State represents the internal data of a component that determines its behavior and rendering. Unlike props, which are passed down from parent components, state is managed within the component itself.
+
+<Callout emoji="💡">
+  Think of state as a component's private data storage that can be modified over time.
+</Callout>
+
+## Using State in Functional Components
+
+With the introduction of React Hooks, functional components can now use state. The `useState` hook is used to add state to functional components.
+
+### Basic Usage of useState
+
+```jsx
+import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+```
+
+In this example:
+- `useState(0)` initializes the state with a value of 0.
+- It returns an array with two elements: the current state value (`count`) and a function to update it (`setCount`).
+- When the button is clicked, `setCount` is called to update the state.
+
+
+## State Updates
+
+### Updating State Based on Previous State
+
+When updating state based on its previous value, it's recommended to use the functional form of the state updater:
+
+```jsx
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(prevCount => prevCount + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+}
+```
+
+This ensures that you're working with the most up-to-date state value, especially in cases where multiple state updates may occur in rapid succession.
+
+### Updating Object State
+
+When the state is an object, you need to make sure to spread the previous state to avoid losing other properties:
+
+```jsx
+function UserForm() {
+  const [user, setUser] = useState({ name: '', email: '' });
+
+  const handleNameChange = (e) => {
+    setUser(prevUser => ({
+      ...prevUser,
+      name: e.target.value
+    }));
+  };
+
+  // ... rest of the component
+}
+```
+
+## State vs Props
+
+It's important to understand the difference between state and props:
+
+- **State** is internal and controlled by the component itself.
+- **Props** are external and controlled by whatever renders the component.
+
+<Callout emoji="🔑">
+  Use state for data that changes over time and props for data that's passed down from parent components.
+</Callout>
+
+## When to Use State
+
+Use state when:
+1. Data changes over time
+2. Data cannot be computed from props
+3. You need to trigger a re-render when data changes
+
+## Best Practices
+
+1. **Keep state minimal**: Only include in the state values that you need for rendering or data flow.
+2. **Lift state up**: If multiple components need access to the same state, move it to their closest common ancestor.
+3. **Use multiple state variables**: Split state into multiple variables based on which values tend to change together.
+
+```jsx
+function UserDashboard() {
+  const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // ... rest of the component
+}
+```
+
+## Common Pitfalls
+
+1. **Modifying State Directly**: Always use the state updater function. Don't modify state directly.
+
+   ```jsx
+   // Incorrect
+   user.name = 'New Name';
+
+   // Correct
+   setUser(prevUser => ({ ...prevUser, name: 'New Name' }));
+   ```
+
+2. **Assuming State Updates are Immediate**: State updates are asynchronous. Don't rely on the state value being updated immediately after calling the setter function.
+
+3. **Forgetting that setState Merges in Class Components**: In class components, `setState` merges the new state with the old one. In functional components with `useState`, you need to handle merging manually.
+
+## Conclusion
+
+Understanding and effectively using state is fundamental to building dynamic React applications. As you progress in your React journey, you'll encounter more advanced state management techniques and libraries, but mastering the basics of React's built-in state management will serve as a strong foundation.
+
+<Callout emoji="🚀">
+  Practice working with state by building small, interactive components. Try creating a form with multiple fields, a todo list, or a simple game to reinforce these concepts.
+</Callout>

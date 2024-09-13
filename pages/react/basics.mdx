@@ -1,0 +1,99 @@
+import Callout from '../../components/Callout';
+
+# React Basics
+
+React is a popular JavaScript library for building user interfaces. Let's explore some fundamental concepts.
+
+## Components
+
+Components are the building blocks of React applications. They can be functional or class-based.
+
+### Functional Components
+
+```jsx
+import React from 'react';
+
+function Greeting({ name }) {
+  return <h1>Hello, {name}!</h1>;
+}
+
+export default Greeting;
+```
+
+### Class Components
+
+```jsx
+import React from 'react';
+
+class Greeting extends React.Component {
+  render() {
+    return <h1>Hello, {this.props.name}!</h1>;
+  }
+}
+
+export default Greeting;
+```
+
+<Callout emoji="💡">
+  Functional components are now preferred over class components due to the introduction of Hooks in React 16.8.
+</Callout>
+
+## JSX
+
+JSX is a syntax extension for JavaScript, used with React to describe what the UI should look like.
+
+```jsx
+const element = <h1>Welcome to React!</h1>;
+```
+
+JSX can include expressions:
+
+```jsx
+const name = 'John Doe';
+const element = <h1>Hello, {name}!</h1>;
+```
+
+## Props
+
+Props are inputs to components. They are passed down from parent to child components.
+
+```jsx
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+
+const element = <Welcome name="Sara" />;
+```
+
+## State
+
+State is used for data that changes over time within a component.
+
+```jsx
+import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+```
+
+<Callout emoji="🔑">
+  Understanding components, JSX, props, and state is crucial for building React applications. These concepts form the foundation of your React journey.
+</Callout>
+
+## Next Steps
+
+- Explore React Hooks in depth
+- Learn about component lifecycle
+- Dive into state management with Context API or Redux
+
+Happy coding on your React journey! 🚀
