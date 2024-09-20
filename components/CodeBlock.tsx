@@ -1,5 +1,6 @@
 import React from "react";
-import { Highlight, themes, type Language } from "prism-react-renderer";
+import { Highlight, themes } from "prism-react-renderer";
+import type { Language } from "prism-react-renderer";
 
 interface CodeBlockProps {
   children: string;
@@ -7,9 +8,48 @@ interface CodeBlockProps {
 }
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ children, className }) => {
-  const language = (
-    className ? className.replace(/language-/, "") : "typescript"
-  ) as Language;
+  let language = className?.replace(/language-/, "") ?? "typescript";
+
+  const validLanguages: Language[] = [
+    "markup",
+    "bash",
+    "clike",
+    "c",
+    "cpp",
+    "css",
+    "javascript",
+    "jsx",
+    "coffeescript",
+    "actionscript",
+    "css-extr",
+    "diff",
+    "git",
+    "go",
+    "graphql",
+    "handlebars",
+    "json",
+    "less",
+    "makefile",
+    "markdown",
+    "objectivec",
+    "ocaml",
+    "python",
+    "reason",
+    "sass",
+    "scss",
+    "sql",
+    "stylus",
+    "typescript",
+    "wasm",
+    "yaml"
+  ];
+
+  if (!validLanguages.includes(language)) {
+    console.warn(
+      `Unsupported language "${language}" provided to CodeBlock. Falling back to "text".`
+    );
+    language = "text";
+  }
 
   return (
     <Highlight
@@ -24,14 +64,17 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ children, className }) => {
             ...style,
             padding: "1rem",
             borderRadius: "0.5rem",
-            overflow: "auto",
+            overflow: "auto"
           }}
         >
           {tokens.map((line, i) => (
-            <div key={`line-${i}`} {...getLineProps({ line, key: i })}>
+            <div
+              key={i}
+              {...getLineProps({ line, key: i })}
+            >
               {line.map((token, key) => (
                 <span
-                  key={`token-${i}-${key}`}
+                  key={key}
                   {...getTokenProps({ token, key })}
                 />
               ))}

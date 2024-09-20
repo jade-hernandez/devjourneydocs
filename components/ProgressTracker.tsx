@@ -7,27 +7,27 @@ interface ProgressTrackerProps {
 
 const ProgressTracker: React.FC<ProgressTrackerProps> = ({
   completed,
-  total,
+  total
 }) => {
   const percentage = Math.round((completed / total) * 100);
 
   return (
-    <div className="mt-4">
-      <div className="flex justify-between mb-1">
-        <span className="text-base font-medium text-blue-700 dark:text-white">
+    <div className='mt-4'>
+      <div className='flex justify-between mb-1'>
+        <span className='text-base font-medium text-blue-700 dark:text-white'>
           Learning Progress
         </span>
-        <span className="text-sm font-medium text-blue-700 dark:text-white">
+        <span className='text-sm font-medium text-blue-700 dark:text-white'>
           {percentage}%
         </span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+      <div className='w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700'>
         <div
-          className="bg-blue-600 h-2.5 rounded-full"
+          className='bg-blue-600 h-2.5 rounded-full'
           style={{ width: `${percentage}%` }}
         ></div>
       </div>
-      <div className="text-sm text-gray-500 mt-1">
+      <div className='text-sm text-gray-500 mt-1'>
         {completed} of {total} topics completed
       </div>
     </div>

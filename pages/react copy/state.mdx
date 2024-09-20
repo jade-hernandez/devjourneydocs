@@ -1,4 +1,4 @@
-import { Callout } from 'nextra/components'
+import { Callout } from "nextra/components";
 
 # React State
 
@@ -8,8 +8,9 @@ State is a crucial concept in React that allows components to manage and store d
 
 State represents the internal data of a component that determines its behavior and rendering. Unlike props, which are passed down from parent components, state is managed within the component itself.
 
-<Callout emoji="💡">
-  Think of state as a component's private data storage that can be modified over time.
+<Callout emoji='💡'>
+  Think of state as a component's private data storage that can be modified over
+  time.
 </Callout>
 
 ## Using State in Functional Components
@@ -19,7 +20,7 @@ With the introduction of React Hooks, functional components can now use state. T
 ### Basic Usage of useState
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 function Counter() {
   const [count, setCount] = useState(0);
@@ -27,19 +28,17 @@ function Counter() {
   return (
     <div>
       <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
     </div>
   );
 }
 ```
 
 In this example:
+
 - `useState(0)` initializes the state with a value of 0.
 - It returns an array with two elements: the current state value (`count`) and a function to update it (`setCount`).
 - When the button is clicked, `setCount` is called to update the state.
-
 
 ## State Updates
 
@@ -70,9 +69,9 @@ When the state is an object, you need to make sure to spread the previous state 
 
 ```jsx
 function UserForm() {
-  const [user, setUser] = useState({ name: '', email: '' });
+  const [user, setUser] = useState({ name: "", email: "" });
 
-  const handleNameChange = (e) => {
+  const handleNameChange = e => {
     setUser(prevUser => ({
       ...prevUser,
       name: e.target.value
@@ -90,13 +89,15 @@ It's important to understand the difference between state and props:
 - **State** is internal and controlled by the component itself.
 - **Props** are external and controlled by whatever renders the component.
 
-<Callout emoji="🔑">
-  Use state for data that changes over time and props for data that's passed down from parent components.
+<Callout emoji='🔑'>
+  Use state for data that changes over time and props for data that's passed
+  down from parent components.
 </Callout>
 
 ## When to Use State
 
 Use state when:
+
 1. Data changes over time
 2. Data cannot be computed from props
 3. You need to trigger a re-render when data changes
@@ -123,10 +124,10 @@ function UserDashboard() {
 
    ```jsx
    // Incorrect
-   user.name = 'New Name';
+   user.name = "New Name";
 
    // Correct
-   setUser(prevUser => ({ ...prevUser, name: 'New Name' }));
+   setUser(prevUser => ({ ...prevUser, name: "New Name" }));
    ```
 
 2. **Assuming State Updates are Immediate**: State updates are asynchronous. Don't rely on the state value being updated immediately after calling the setter function.
@@ -137,6 +138,8 @@ function UserDashboard() {
 
 Understanding and effectively using state is fundamental to building dynamic React applications. As you progress in your React journey, you'll encounter more advanced state management techniques and libraries, but mastering the basics of React's built-in state management will serve as a strong foundation.
 
-<Callout emoji="🚀">
-  Practice working with state by building small, interactive components. Try creating a form with multiple fields, a todo list, or a simple game to reinforce these concepts.
+<Callout emoji='🚀'>
+  Practice working with state by building small, interactive components. Try
+  creating a form with multiple fields, a todo list, or a simple game to
+  reinforce these concepts.
 </Callout>

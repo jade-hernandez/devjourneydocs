@@ -1,8 +1,6 @@
 {
-  "introduction-to-react": "Introduction to React",
-  "basics": "React Basics",
-  "state": "Understanding State",
-  "hooks": "Hooks in React",
-  "advanced-concepts": "Advanced React Concepts"
+  "L1-junior": "L1 - Junior",
+  "L2-mid": "L2 - Mid level",
+  "L3-senior": "L3 - Senior",
+  "L4-lead": "L4 - Lead"
 }
-

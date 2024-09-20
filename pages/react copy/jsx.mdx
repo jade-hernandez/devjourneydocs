@@ -1,0 +1,182 @@
+import { Callout } from "nextra/components";
+
+# JSX in React
+
+JSX is a syntax extension for JavaScript that looks similar to XML or HTML. It's a cornerstone of React development, allowing you to write HTML-like code directly in your JavaScript files. Let's dive into what JSX is, how to use it, and why it's so powerful in React applications.
+
+## Syntax and Usage
+
+JSX stands for JavaScript XML. It provides a way to structure component rendering using syntax familiar to many developers.
+
+### Basic Syntax
+
+Here's a simple example of JSX:
+
+```jsx
+const element = <h1>Hello, world!</h1>;
+```
+
+This might look like HTML, but it's actually JSX that gets compiled to JavaScript.
+
+### Multiline JSX
+
+For multiline JSX, wrap it in parentheses:
+
+```jsx
+const element = (
+  <div>
+    <h1>Hello!</h1>
+    <p>Welcome to JSX.</p>
+  </div>
+);
+```
+
+### JSX Attributes
+
+You can use attributes in JSX, similar to HTML:
+
+```jsx
+const element = (
+  <img
+    src={user.avatarUrl}
+    alt={user.name}
+  />
+);
+```
+
+Note that we use camelCase for attribute names in JSX, unlike kebab-case in HTML.
+
+<Callout emoji='💡'>
+  In JSX, you use `className` instead of `class` for CSS classes, as `class` is
+  a reserved word in JavaScript.
+</Callout>
+
+## Embedding Expressions
+
+One of the most powerful features of JSX is the ability to embed JavaScript expressions directly within it.
+
+### Using Curly Braces
+
+You can embed any JavaScript expression in JSX by wrapping it in curly braces:
+
+```jsx
+const name = "John Doe";
+const element = <h1>Hello, {name}!</h1>;
+```
+
+### Expressions in Attributes
+
+You can also use expressions in attributes:
+
+```jsx
+const imgUrl = "https://example.com/image.jpg";
+const element = (
+  <img
+    src={imgUrl}
+    alt='An example image'
+  />
+);
+```
+
+### Conditional Rendering
+
+You can use JavaScript expressions for conditional rendering:
+
+```jsx
+const isLoggedIn = true;
+const element = <div>{isLoggedIn ? <UserGreeting /> : <GuestGreeting />}</div>;
+```
+
+### Rendering Lists
+
+JSX works great with JavaScript's map function for rendering lists:
+
+```jsx
+const numbers = [1, 2, 3, 4, 5];
+const listItems = numbers.map(number => (
+  <li key={number.toString()}>{number}</li>
+));
+
+const element = <ul>{listItems}</ul>;
+```
+
+<Callout emoji='🔑'>
+  Remember to include a unique `key` prop when rendering lists in JSX. This
+  helps React identify which items have changed, been added, or been removed.
+</Callout>
+
+## JSX vs HTML
+
+While JSX might look very similar to HTML, there are some key differences:
+
+1. **ClassName vs Class**: In JSX, you use `className` to assign CSS classes, not `class` as in HTML.
+
+   ```jsx
+   // JSX
+   <div className="container">...</div>
+
+   <!-- HTML -->
+   <div class="container">...</div>
+   ```
+
+2. **camelCase Property Naming**: In JSX, we use camelCase for property names, while in HTML, we typically use lowercase.
+
+   ```jsx
+   // JSX
+   <label htmlFor="name">Name:</label>
+
+   <!-- HTML -->
+   <label for="name">Name:</label>
+   ```
+
+3. **Self-Closing Tags**: In JSX, you must close all tags, even self-closing ones.
+
+   ```jsx
+   // JSX
+   <img src="image.jpg" alt="An image" />
+
+   <!-- HTML -->
+   <img src="image.jpg" alt="An image">
+   ```
+
+4. **JavaScript Expressions**: JSX allows you to embed JavaScript expressions using curly braces, which isn't possible in regular HTML.
+
+   ```jsx
+   // JSX
+   <div>{2 + 2}</div>
+
+   <!-- HTML -->
+   <div>2 + 2</div> <!-- This would just render as text -->
+   ```
+
+5. **Inline Styling**: In JSX, inline styles are specified as objects with camelCased properties.
+
+   ```jsx
+   // JSX
+   <div style={{ backgroundColor: 'red', fontSize: '14px' }}>...</div>
+
+   <!-- HTML -->
+   <div style="background-color: red; font-size: 14px;">...</div>
+   ```
+
+6. **Event Handling**: JSX uses camelCase for event handler names and passes a function as the event handler, rather than a string.
+
+   ```jsx
+   // JSX
+   <button onClick={handleClick}>Click me</button>
+
+   <!-- HTML -->
+   <button onclick="handleClick()">Click me</button>
+   ```
+
+<Callout emoji='🎨'>
+  Think of JSX as a powerful paintbrush that allows you to seamlessly blend
+  HTML-like structure with the full power of JavaScript. It's like writing HTML,
+  but with superpowers!
+</Callout>
+
+## Conclusion
+
+JSX is a fundamental part of React that makes creating UI components more intuitive and powerful. It allows you to write HTML-like code directly in your JavaScript, embed expressions, and clearly describe the structure of your UI. While it may seem a bit strange at first, especially if you're coming from a traditional HTML background, you'll soon find that JSX makes your React code more readable and easier to maintain.
+
+As you continue your React journey, you'll become more comfortable with JSX and discover even more ways to leverage its power in your applications. Happy coding!
