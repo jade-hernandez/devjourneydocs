@@ -1,0 +1,159 @@
+import { Callout } from "nextra/components";
+import { Quiz } from "../../../components/Quiz";
+import { ProgressTracker } from "../../../components/ProgressTracker";
+import { CodingChallenge } from "../../../components/CodingChallenge";
+
+# JSX Syntax - Exercises
+
+<ProgressTracker
+  section={1}
+  completedTasks={1}
+  totalTasks={5}
+/>
+
+<Callout emoji='📚'>
+  Before attempting these exercises, make sure you've read through the [JSX
+  Syntax](http://localhost:3000/react/L1-junior/jsx) documentation.
+</Callout>
+
+## Quiz
+
+Test your knowledge of JSX with these questions:
+
+<Quiz
+  question='What does JSX stand for?'
+  options={[
+    "JavaScript XML",
+    "Java Syntax Extension",
+    "JSON XML",
+    "JavaScript Execution"
+  ]}
+  correctAnswer='JavaScript XML'
+/>
+
+<Quiz
+  question='Which of the following is NOT a key feature of JSX?'
+  options={[
+    "XML-like syntax",
+    "Ability to embed JavaScript expressions",
+    "Direct execution in browsers",
+    "Represents React elements"
+  ]}
+  correctAnswer='Direct execution in browsers'
+/>
+
+<Quiz
+  question='In JSX, how do you write a JavaScript expression?'
+  options={[
+    "Using square brackets []",
+    "Using parentheses ()",
+    "Using curly braces {}",
+    "Using angle brackets <>"
+  ]}
+  correctAnswer='Using curly braces {}'
+/>
+
+## Coding Challenges
+
+### 1. Create a JSX Element
+
+Create a JSX element that represents a button with the text "Click me!" and a custom class name "custom-button".
+
+<CodingChallenge
+  initialCode={`
+function ButtonElement() {
+  // Your code here
+}
+
+// Render the component
+render(<ButtonElement />);
+`}
+  solution={`
+function ButtonElement() {
+return <button className="custom-button">Click me!</button>;
+}
+
+// Render the component
+render(<ButtonElement />);
+`}
+/>
+
+### 2. Embed JavaScript Expressions in JSX
+
+Create a JSX element that displays a person's name and age using embedded JavaScript expressions. Use variables for the name and age.
+
+<CodingChallenge
+  initialCode={`
+function PersonInfo() {
+  const name = "Alice";
+  const age = 28;
+
+// Your code here
+}
+
+// Render the component
+render(<PersonInfo />);
+`}
+  solution={`
+function PersonInfo() {
+const name = "Alice";
+const age = 28;
+
+return <p>{name} is {age} years old.</p>;
+}
+
+// Render the component
+render(<PersonInfo />);
+`}
+/>
+
+### 3. Nested JSX Elements
+
+Create a JSX structure that represents a simple card with a title, content, and a list of tags. Use appropriate HTML tags and nest them correctly.
+
+<CodingChallenge
+  initialCode={`
+function Card() {
+  const title = "My First JSX Card";
+  const content = "This is a card created using JSX!";
+  const tags = ["jsx", "react", "ui"];
+
+// Your code here
+}
+
+// Render the component
+render(<Card />);
+`}
+  solution={`
+function Card() {
+const title = "My First JSX Card";
+const content = "This is a card created using JSX!";
+const tags = ["jsx", "react", "ui"];
+
+return (
+<div className="card">
+<h2>{title}</h2>
+<p>{content}</p>
+<ul>
+{tags.map((tag, index) => (
+<li key={index}>{tag}</li>
+))}
+</ul>
+</div>
+);
+}
+
+// Render the component
+render(<Card />);
+`}
+/>
+
+## Further Practice
+
+For more hands-on practice with JSX:
+
+1. Create a JSX element that conditionally renders different content based on a variable.
+2. Try creating a JSX element that includes a self-closing tag (like an image) with attributes.
+3. Experiment with using JavaScript expressions to dynamically set JSX attributes.
+
+Remember, JSX is a powerful feature of React that allows you to write expressive UI code. Keep practicing and refer back to the documentation as needed!

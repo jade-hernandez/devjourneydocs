@@ -1,0 +1,222 @@
+import { Callout } from "nextra/components";
+
+# Server-Side Rendering (SSR) in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  Server-Side Rendering (SSR) is a technique where the initial content of a
+  React application is generated on the server rather than in the browser. This
+  can lead to faster initial page loads, improved SEO, and better performance on
+  low-powered devices.
+</Callout>
+
+## Detailed Explanation
+
+### Concepts and Benefits
+
+#### What is SSR?
+
+Server-Side Rendering is the process of taking a React component tree and rendering it to static HTML on the server. This HTML is then sent to the client, where React takes over (a process called hydration) to make the page interactive.
+
+#### Key Concepts
+
+1. **Initial Render**: The server generates the initial HTML content.
+2. **Hydration**: The process where React attaches event listeners to the server-rendered HTML.
+3. **State Management**: Handling the transfer of initial state from server to client.
+4. **Routing**: Managing routes between server and client.
+
+#### Benefits of SSR
+
+1. **Improved Initial Load Time**: Users see content faster, especially on slow connections.
+2. **Better SEO**: Search engines can crawl the fully rendered content.
+3. **Enhanced Performance on Low-Powered Devices**: Less JavaScript needs to be parsed and executed on the client.
+4. **Improved Accessibility**: Content is available even if JavaScript fails or is disabled.
+5. **Consistent Performance**: More predictable performance across different devices and network conditions.
+
+### Implementation with Next.js
+
+Next.js is a popular React framework that provides built-in support for SSR. It simplifies many of the complexities involved in implementing SSR from scratch.
+
+**Key Features of Next.js for SSR**:
+
+- Automatic code splitting
+- File-system based routing
+- API routes
+- Built-in CSS support
+- Easy deployment
+
+## Code Examples
+
+### Basic SSR with Next.js
+
+```jsx
+// pages/index.js
+import React from "react";
+
+function Home({ serverData }) {
+  return (
+    <div>
+      <h1>Welcome to my SSR App</h1>
+      <p>Server data: {serverData}</p>
+    </div>
+  );
+}
+
+export async function getServerSideProps() {
+  // Fetch data from an API
+  const res = await fetch("https://api.example.com/data");
+  const data = await res.json();
+
+  // Pass data to the page via props
+  return { props: { serverData: data.message } };
+}
+
+export default Home;
+```
+
+### SSR with Dynamic Routes
+
+```jsx
+// pages/posts/[id].js
+import React from "react";
+
+function Post({ post }) {
+  return (
+    <div>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </div>
+  );
+}
+
+export async function getServerSideProps({ params }) {
+  // Fetch post data based on id
+  const res = await fetch(`https://api.example.com/posts/${params.id}`);
+  const post = await res.json();
+
+  return { props: { post } };
+}
+
+export default Post;
+```
+
+### Combining SSR with Client-Side Rendering
+
+```jsx
+// pages/dashboard.js
+import React, { useState, useEffect } from "react";
+
+function Dashboard({ initialData }) {
+  const [data, setData] = useState(initialData);
+
+  useEffect(() => {
+    // Client-side data fetching for real-time updates
+    const fetchData = async () => {
+      const res = await fetch("https://api.example.com/live-data");
+      const newData = await res.json();
+      setData(newData);
+    };
+
+    const interval = setInterval(fetchData, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <p>Data: {data}</p>
+    </div>
+  );
+}
+
+export async function getServerSideProps() {
+  const res = await fetch("https://api.example.com/initial-data");
+  const initialData = await res.json();
+
+  return { props: { initialData } };
+}
+
+export default Dashboard;
+```
+
+## Best Practices
+
+1. **Selective SSR**: Not all pages need SSR. Use it judiciously where it provides clear benefits.
+
+2. **Efficient Data Fetching**: Optimize server-side data fetching to minimize Time to First Byte (TTFB).
+
+3. **Code Splitting**: Utilize dynamic imports to load only necessary JavaScript.
+
+4. **Caching**: Implement effective caching strategies to reduce server load and improve response times.
+
+5. **Error Handling**: Implement robust error handling for both server and client-side errors.
+
+6. **Performance Monitoring**: Regularly monitor SSR performance and optimize as necessary.
+
+7. **SEO Optimization**: Ensure proper meta tags and structured data are included in server-rendered content.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Over-fetching Data:
+
+   - Mistake: Fetching too much data on the server for pages that don't need it.
+   - Why: This can slow down the initial page load.
+   - Solution: Only fetch data that's necessary for the initial render.
+
+</Callout>
+
+<Callout>
+
+2. Ignoring Client-Side State:
+
+   - Mistake: Not properly handling the transfer of state from server to client.
+   - Why: This can lead to inconsistencies between server and client renders.
+   - Solution: Ensure proper hydration and state transfer techniques are used.
+
+</Callout>
+
+<Callout>
+
+3. Mishandling Browser-Only APIs:
+
+   - Mistake: Using browser-only APIs (like `window`) in code that runs on the server.
+   - Why: This will cause errors during server-side rendering.
+   - Solution: Use conditional checks or move browser-specific code to lifecycle methods that only run on the client.
+
+</Callout>
+
+<Callout>
+
+4. Neglecting Performance Monitoring:
+   - Mistake: Not monitoring the performance impact of SSR.
+   - Why: SSR can sometimes negatively impact performance if not implemented correctly.
+   - Solution: Regularly profile and optimize your SSR implementation.
+
+</Callout>
+
+## Related Concepts
+
+1. **Static Site Generation (SSG)**: An alternative to SSR where pages are generated at build time.
+2. **Incremental Static Regeneration (ISR)**: A hybrid approach combining benefits of SSG and SSR.
+3. **Hydration**: The process of attaching event listeners to server-rendered HTML.
+4. **Code Splitting**: Technique for improving performance by splitting the bundle into smaller chunks.
+5. **Edge Computing**: Running server-side code closer to the user for improved performance.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Next.js Documentation](https://nextjs.org/docs): Official documentation for Next.js, including SSR guides.
+
+2. [React Server Components](https://react.dev/blog/2020/12/21/data-fetching-with-react-server-components): Information about the future of server-side React with Server Components.
+
+3. [Server-Side Rendering with React and Node.js](https://www.digitalocean.com/community/tutorials/react-server-side-rendering): A comprehensive guide to implementing SSR from scratch.
+
+4. [The Benefits of Server Side Rendering Over Client Side Rendering](https://medium.com/walmartglobaltech/the-benefits-of-server-side-rendering-over-client-side-rendering-5d07ff2cefe8): An article discussing the advantages of SSR.
+
+5. [Server-Side Rendering with React and Redux](https://redux.js.org/recipes/server-rendering): Official Redux documentation on implementing SSR.
+
+</Callout>

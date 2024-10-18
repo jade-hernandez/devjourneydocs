@@ -1,0 +1,321 @@
+import { Callout } from "nextra/components";
+
+# React Hooks and Custom Hooks
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  React Hooks are functions that let you "hook into" React state and lifecycle
+  features from functional components. They enable you to use state and other
+  React features without writing a class. Custom Hooks allow you to extract
+  component logic into reusable functions.
+</Callout>
+
+## Detailed Explanation
+
+### What is what?
+
+1. **React Hooks**: Built-in functions provided by React to add state and lifecycle features to functional components (useState, useEffect, useContext, etc.).
+
+2. **Custom Hooks**: User-defined functions that leverage one or more React Hooks to encapsulate and reuse stateful logic across components.
+
+### Why and how to use each one?
+
+1. **useState**:
+
+   - Why: To add state to functional components.
+   - How: `const [state, setState] = useState(initialState);`
+
+2. **useEffect**:
+
+   - Why: To perform side effects in functional components.
+   - How: `useEffect(() => { /* effect */ }, [dependencies]);`
+
+3. **useContext**:
+
+   - Why: To consume context in functional components.
+   - How: `const value = useContext(MyContext);`
+
+4. **useReducer**:
+
+   - Why: For complex state logic that involves multiple sub-values.
+   - How: `const [state, dispatch] = useReducer(reducer, initialState);`
+
+5. **useCallback**:
+
+   - Why: To memoize functions for performance optimization.
+   - How: `const memoizedCallback = useCallback(() => { /* function */ }, [dependencies]);`
+
+6. **useMemo**:
+
+   - Why: To memoize expensive computations.
+   - How: `const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);`
+
+7. **useRef**:
+   - Why: To persist values across renders without causing re-renders.
+   - How: `const refContainer = useRef(initialValue);`
+
+### In which context?
+
+- Hooks are used in functional components to add features that were previously only available in class components.
+- They are used throughout a React application for state management, side effects, context consumption, and performance optimization.
+
+### For what purpose?
+
+- To simplify component logic and make it more readable.
+- To reuse stateful logic between components without changing component hierarchy.
+- To split one complex component into smaller functions based on related pieces.
+- To use React features without classes, making the code more concise and easier to understand.
+
+### What value do these bring to our codebase?
+
+- Improved code reusability and organization.
+- Reduced complexity compared to class components and lifecycle methods.
+- Easier to test and maintain due to separation of concerns.
+- Better performance optimization capabilities.
+- More intuitive sharing of stateful logic between components.
+
+### Creating custom hooks
+
+Custom hooks are JavaScript functions that use one or more React hooks. They allow you to extract component logic into reusable functions.
+
+Example of a custom hook:
+
+```jsx
+function useWindowWidth() {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return width;
+}
+```
+
+### Reusing logic across components
+
+Custom hooks allow you to reuse logic across multiple components without changing their structure.
+
+Example of reusing the custom hook:
+
+```jsx
+function WindowWidth() {
+  const width = useWindowWidth();
+  return <div>Window width: {width}</div>;
+}
+
+function AnotherComponent() {
+  const width = useWindowWidth();
+  return <div>The window is {width > 1000 ? "large" : "small"}</div>;
+}
+```
+
+### Best practices for custom hooks
+
+1. **Name custom hooks with 'use' prefix**: This convention helps identify hooks and ensures the rules of hooks are enforced.
+
+2. **Keep hooks focused**: Each custom hook should have a single responsibility.
+
+3. **Compose hooks**: Build complex custom hooks by composing simpler ones.
+
+4. **Handle cleanup**: If your custom hook sets up subscriptions or timers, make sure to clean them up.
+
+5. **Use TypeScript**: Define clear interfaces for your custom hooks to improve usability and catch errors early.
+
+6. **Document your hooks**: Provide clear documentation on what the hook does, its parameters, and return values.
+
+7. **Test your hooks**: Write unit tests for your custom hooks to ensure they behave correctly.
+
+## Code Examples
+
+### Basic useState Example
+
+```jsx
+import React, { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+```
+
+Explanation:
+
+- This example demonstrates the basic usage of the `useState` hook.
+- `useState(0)` initializes a state variable `count` with an initial value of 0.
+- It returns an array with two elements: the current state value (`count`) and a function to update it (`setCount`).
+- The `onClick` handler uses `setCount` to increment the count by 1 each time the button is clicked.
+- React re-renders the component after each state update, displaying the new count.
+
+### useEffect for Data Fetching
+
+```jsx
+import React, { useState, useEffect } from "react";
+
+function DataFetcher() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch("https://api.example.com/data")
+      .then(response => response.json())
+      .then(data => setData(data));
+  }, []); // Empty dependency array means this effect runs once on mount
+
+  if (!data) return <div>Loading...</div>;
+
+  return <div>{JSON.stringify(data)}</div>;
+}
+```
+
+Explanation:
+
+- This example shows how to use `useEffect` for data fetching.
+- `useState(null)` initializes a `data` state variable to store the fetched data.
+- `useEffect` is used to perform the side effect of fetching data.
+- The empty dependency array `[]` ensures that the effect only runs once when the component mounts.
+- While data is being fetched (when `data` is still null), a loading message is displayed.
+- Once data is fetched, it's displayed by converting it to a JSON string.
+- This pattern is common for handling asynchronous operations in functional components.
+
+### Custom Hook Example
+
+```jsx
+import { useState, useEffect } from "react";
+
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+// Usage
+function SearchComponent() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      // Perform search here
+    }
+  }, [debouncedSearchTerm]);
+
+  return (
+    <input
+      value={searchTerm}
+      onChange={e => setSearchTerm(e.target.value)}
+      placeholder='Search...'
+    />
+  );
+}
+```
+
+Explanation:
+
+- This example demonstrates creating and using a custom hook `useDebounce`.
+- `useDebounce` takes a value and a delay, and returns a debounced version of the value.
+- Inside `useDebounce`, `useEffect` sets up a timer that updates the debounced value after the specified delay.
+- The cleanup function in `useEffect` clears the timeout if the value changes before the delay has passed.
+- In `SearchComponent`, `useDebounce` is used to create a debounced version of the search term.
+- This prevents the search from being performed on every keystroke, instead waiting for a pause in typing.
+- The `useEffect` in `SearchComponent` will only trigger a search when the debounced search term changes.
+- This pattern is useful for performance optimization in scenarios like search inputs or auto-saving forms.
+
+## Best Practices
+
+1. **Follow the Rules of Hooks**: Only call Hooks at the top level and only from React function components or custom Hooks.
+
+2. **Keep Hooks Simple**: Each Hook should ideally do one thing well.
+
+3. **Memoize Expensive Computations**: Use useMemo for expensive calculations to prevent unnecessary re-computation.
+
+4. **Optimize Event Handlers**: Use useCallback to memoize event handlers when passing them to optimized child components.
+
+5. **Prefer Hooks Over HOCs and Render Props**: Hooks often provide a simpler way to reuse logic compared to these patterns.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Ignoring Dependencies:
+
+   - Mistake: Not including all necessary dependencies in useEffect's dependency array.
+   - Why: This can lead to stale closures and bugs that are hard to track down.
+   - Solution: Use the exhaustive-deps ESLint rule and include all variables from the component scope that the effect uses.
+
+</Callout>
+
+<Callout>
+
+2. Overusing useEffect:
+
+   - Mistake: Using useEffect for synchronous operations that could be done directly in the render phase.
+   - Why: This can lead to unnecessary re-renders and complicates the component logic.
+   - Solution: Only use useEffect for side effects and asynchronous operations.
+
+</Callout>
+
+<Callout>
+
+3. Incorrect Dependency Array in useMemo and useCallback:
+
+   - Mistake: Not including all dependencies or including unnecessary ones.
+   - Why: This can lead to unexpected behavior or negate the performance benefits.
+   - Solution: Carefully consider what the callback or computation depends on.
+
+</Callout>
+
+<Callout>
+
+4. Creating Hooks Inside Components:
+   - Mistake: Defining custom hooks inside component functions.
+   - Why: This creates a new hook on every render, defeating the purpose of hooks.
+   - Solution: Always define custom hooks outside of and before your component functions.
+
+</Callout>
+
+## Related Concepts
+
+1. **Functional Components**: Hooks are designed to be used in functional components.
+2. **State Management**: Hooks like useState and useReducer are fundamental to state management in React.
+3. **Side Effects**: useEffect is crucial for handling side effects in functional components.
+4. **Context API**: useContext hook is used to consume React context.
+5. **Memoization**: useMemo and useCallback are used for performance optimization through memoization.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Hooks API Reference](https://react.dev/reference/react): Official React documentation on Hooks.
+
+2. [Hooks at a Glance](https://react.dev/learn/hooks-overview): A quick introduction to Hooks from the React docs. 🚨🚨🚨🚨🚨🚨
+
+3. [Custom Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks): React documentation on creating and using custom Hooks.
+
+4. [Hooks FAQ](https://legacy.reactjs.org/docs/hooks-faq.html): Answers to frequently asked questions about Hooks.
+
+5. [useHooks](https://usehooks.com/): A collection of reusable React Hooks.
+
+6. [React Hooks in Action](https://www.manning.com/books/react-hooks-in-action): A book dedicated to understanding and mastering React Hooks.
+
+7. [Thinking in React Hooks](https://2019.wattenberger.com/blog/react-hooks): A visual guide to understanding Hooks.
+
+</Callout>

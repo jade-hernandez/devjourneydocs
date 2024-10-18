@@ -1,9 +1,0 @@
-{
-  "introduction-to-react": "Introduction to React",
-  "jsx": "JSX in React",
-  "basics": "React Basics",
-  "components": "Components in React",
-  "state": "Understanding State",
-  "hooks": "React Hooks and custom Hooks",
-  "children": "Children in React"
-}

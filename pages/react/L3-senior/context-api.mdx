@@ -1,0 +1,206 @@
+import { Callout } from "nextra/components";
+
+# Context API & useContext in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  The Context API in React provides a way to pass data through the component
+  tree without having to pass props down manually at every level. The useContext
+  hook allows functional components to consume this context easily.
+</Callout>
+
+## Detailed Explanation
+
+### What is the Context API?
+
+The Context API is a feature in React that allows you to share values like themes, user authentication status, or any other global data across many components without explicitly passing props through every level of the component tree.
+
+### Why does it exist?
+
+The Context API exists to solve the problem of prop drilling - the process of passing props through multiple levels of components that don't need those props themselves but only pass them along to lower components.
+
+### For which purpose?
+
+**The main purposes of the Context API are**:
+
+1. Sharing global data across many components
+2. Avoiding prop drilling
+3. Providing a way to manage global state in React applications
+
+### Creating Context
+
+To create a context, you use the `createContext` function from React:
+
+```jsx
+import React from "react";
+
+const ThemeContext = React.createContext("light");
+```
+
+### Creating Providers and Consuming Context
+
+A Provider is a React component that allows consuming components to subscribe to context changes. Here's an example of creating and using a Provider:
+
+```jsx
+function App() {
+  return (
+    <ThemeContext.Provider value='dark'>
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+
+function Toolbar() {
+  return (
+    <div>
+      <ThemedButton />
+    </div>
+  );
+}
+```
+
+### useContext Hook
+
+The `useContext` hook provides a way to consume context in functional components:
+
+```jsx
+import React, { useContext } from "react";
+
+function ThemedButton() {
+  const theme = useContext(ThemeContext);
+  return (
+    <button style={{ background: theme }}>I am styled by theme context!</button>
+  );
+}
+```
+
+## Basic Usage
+
+Here's a complete example demonstrating the Context API and useContext:
+
+```jsx
+import React, { createContext, useContext, useState } from "react";
+
+// Create a context
+const ThemeContext = createContext();
+
+// Create a provider component
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState("light");
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+// A component that consumes the context
+function ThemedButton() {
+  const { theme, setTheme } = useContext(ThemeContext);
+
+  return (
+    <button
+      style={{
+        background: theme === "light" ? "#fff" : "#000",
+        color: theme === "light" ? "#000" : "#fff"
+      }}
+      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+    >
+      Toggle Theme
+    </button>
+  );
+}
+
+// App component
+function App() {
+  return (
+    <ThemeProvider>
+      <div>
+        <h1>My App</h1>
+        <ThemedButton />
+      </div>
+    </ThemeProvider>
+  );
+}
+
+export default App;
+```
+
+## Best Practices
+
+1. **Use Context for Global State**: Context is best for data that can be considered "global" for a tree of React components.
+2. **Keep Context Usage Simple**: Avoid putting too much data or complex logic in a single context.
+3. **Split Contexts**: If you have multiple independent pieces of global state, create separate contexts for each.
+4. **Memoize Context Value**: If you're passing objects as context value, consider memoizing them to prevent unnecessary re-renders.
+5. **Use Context Judiciously**: While Context can solve prop drilling, it can also make component reuse more difficult. Use it when it genuinely simplifies your code.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Overusing Context:
+
+   - Mistake: Using Context for every piece of shared state.
+   - Why: This can lead to performance issues and make components less reusable.
+   - Solution: Use Context for truly global state, and consider component composition or lifting state up for more localized sharing.
+
+</Callout>
+
+<Callout>
+
+2. Ignoring Re-renders:
+
+   - Mistake: Not considering that all consumers will re-render when the context value changes.
+   - Why: This can lead to performance issues in large applications.
+   - Solution: Use memoization techniques (like useMemo) for context values, and split contexts if necessary.
+
+</Callout>
+
+<Callout>
+
+3. Forgetting to Wrap Providers:
+
+   - Mistake: Not wrapping components that need access to the context with the Provider.
+   - Why: Components outside the Provider can't access the context.
+   - Solution: Ensure that all components that need access to the context are descendants of a Provider component.
+
+</Callout>
+
+<Callout>
+
+4. Modifying Context Value Directly:
+   - Mistake: Changing the context value without using setState or a similar method.
+   - Why: This won't trigger re-renders in consuming components.
+   - Solution: Always use state updating methods (like those returned by useState) to modify context values.
+
+</Callout>
+
+## Related Concepts
+
+1. **Redux**: Another popular state management solution that can be used alongside or instead of Context.
+2. **useReducer**: Often used with Context for more complex state management.
+3. **Prop Drilling**: The problem that Context aims to solve.
+4. **Higher-Order Components**: An alternative pattern for sharing behavior between components.
+5. **Render Props**: Another pattern for sharing code between React components.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Context](https://react.dev/learn/passing-data-deeply-with-context): Official React documentation on Context from the new React docs.
+
+2. [useContext](https://react.dev/reference/react/useContext): Official documentation on the useContext hook.
+
+3. [Scaling Up with Reducer and Context](https://react.dev/learn/scaling-up-with-reducer-and-context): Guide on combining useReducer with Context for scalable state management.
+
+4. [Before You Use Context](https://react.dev/learn/passing-data-deeply-with-context#before-you-use-context): Important considerations before using Context.
+
+5. [Keeping Components Pure](https://react.dev/learn/keeping-components-pure): Understanding component purity, which is important when working with Context.
+
+6. [Application State Management with React](https://kentcdodds.com/blog/application-state-management-with-react): A comprehensive guide on state management in React, including the use of Context.
+
+7. [How to use React Context effectively](https://kentcdodds.com/blog/how-to-use-react-context-effectively): Advanced patterns for using Context effectively in React applications.
+
+</Callout>

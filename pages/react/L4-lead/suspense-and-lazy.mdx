@@ -1,0 +1,196 @@
+import { Callout } from "nextra/components";
+
+# Suspense in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  Suspense is a React feature that allows components to "suspend" rendering
+  while they're waiting for something (like data or code) to load. It enables
+  declarative loading states and helps in creating a smoother user experience
+  during data fetching.
+</Callout>
+
+## Detailed Explanation
+
+### Data Fetching with Suspense
+
+Suspense for data fetching is designed to simplify the process of handling asynchronous operations in React components. It allows you to declaratively specify loading states for your components while waiting for data to be fetched.
+
+**Key concepts**:
+
+1. **Suspend Rendering**: Components can suspend rendering while waiting for data.
+2. **Fallback UI**: Specify a fallback UI to show while data is loading.
+3. **Streaming Server-Side Rendering**: Enhances server-side rendering capabilities.
+4. **Concurrent Mode**: Works best with React's Concurrent Mode for smoother updates.
+
+## Code Examples
+
+### Basic Suspense Usage
+
+Here's a basic example of how Suspense might be used for data fetching:
+
+```jsx
+import React, { Suspense } from "react";
+import { fetchData } from "./api";
+
+// This component is written to be "suspense-ready"
+const DataComponent = () => {
+  const data = fetchData(); // This function throws a promise if data isn't ready
+  return <div>{data}</div>;
+};
+
+function App() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <DataComponent />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+### Suspense with Error Boundaries
+
+Combining Suspense with Error Boundaries for better error handling:
+
+```jsx
+import React, { Suspense } from "react";
+import ErrorBoundary from "./ErrorBoundary";
+import { fetchData } from "./api";
+
+const DataComponent = () => {
+  const data = fetchData();
+  return <div>{data}</div>;
+};
+
+function App() {
+  return (
+    <div>
+      <ErrorBoundary fallback={<div>Error loading data</div>}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <DataComponent />
+        </Suspense>
+      </ErrorBoundary>
+    </div>
+  );
+}
+```
+
+### Multiple Suspense Boundaries
+
+Using multiple Suspense boundaries for different parts of your UI:
+
+```jsx
+import React, { Suspense } from "react";
+import { fetchUserData, fetchPosts } from "./api";
+
+const UserInfo = () => {
+  const user = fetchUserData();
+  return <div>{user.name}</div>;
+};
+
+const Posts = () => {
+  const posts = fetchPosts();
+  return (
+    <ul>
+      {posts.map(post => (
+        <li key={post.id}>{post.title}</li>
+      ))}
+    </ul>
+  );
+};
+
+function App() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading user info...</div>}>
+        <UserInfo />
+      </Suspense>
+      <Suspense fallback={<div>Loading posts...</div>}>
+        <Posts />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+1. **Use with Concurrent Mode**: Suspense works best when used with React's Concurrent Mode.
+
+2. **Graceful Degradation**: Provide fallback UIs that give users meaningful information about what's loading.
+
+3. **Appropriate Granularity**: Use multiple Suspense boundaries to load different parts of the UI independently.
+
+4. **Combine with Error Boundaries**: Always use Error Boundaries with Suspense to handle errors gracefully.
+
+5. **Avoid Waterfalls**: Try to parallelize data fetching where possible to avoid request waterfalls.
+
+6. **Optimize the Fallback UI**: Make sure your fallback UI closely resembles the final content to reduce layout shifts.
+
+7. **Consider Server-Side Rendering**: Suspense can enhance server-side rendering capabilities, improving initial load times.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Overusing Suspense:
+
+   - Mistake: Wrapping every component in Suspense.
+   - Why: This can lead to a confusing user experience with too many loading states.
+   - Solution: Use Suspense judiciously, typically at layout boundaries.
+
+</Callout>
+
+<Callout>
+
+2. Ignoring Error Handling:
+
+   - Mistake: Not using Error Boundaries with Suspense.
+   - Why: This can lead to uncaught errors and broken UI states.
+   - Solution: Always combine Suspense with Error Boundaries.
+
+</Callout>
+
+<Callout>
+
+3. Creating Request Waterfalls:
+
+   - Mistake: Nesting Suspense boundaries in a way that creates sequential data fetching.
+   - Why: This can significantly slow down your application.
+   - Solution: Structure your components to allow parallel data fetching where possible.
+
+</Callout>
+
+<Callout>
+
+4. Forgetting about Race Conditions:
+   - Mistake: Not handling potential race conditions in data fetching.
+   - Why: This can lead to stale or incorrect data being displayed.
+   - Solution: Implement proper cancellation and deduplication strategies in your data fetching logic.
+
+</Callout>
+
+## Related Concepts
+
+1. **Concurrent Mode**: Suspense is designed to work optimally with React's Concurrent Mode.
+2. **Code Splitting**: Suspense can be used for code splitting with React.lazy().
+3. **Error Boundaries**: Often used in conjunction with Suspense for error handling.
+4. **React.lazy**: Used with Suspense for component-level code splitting.
+5. **Server-Side Rendering**: Suspense enhances SSR capabilities in React.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Suspense for Data Fetching](https://react.dev/reference/react/Suspense): Official React documentation on Suspense.
+
+2. [Concurrent Mode](https://react.dev/learn/managing-state): React documentation on Concurrent Mode, which works closely with Suspense.
+
+3. [A Complete Guide to React Suspense](https://hygraph.com/blog/react-suspense): A comprehensive guide to understanding and using Suspense.
+
+4. [Async React using React Suspense](https://reactjs.org/blog/2018/11/27/react-16-roadmap.html#react-16x-mid-2019-the-one-with-suspense-for-data-fetching): React team's vision for asynchronous rendering with Suspense.
+
+</Callout>

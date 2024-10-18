@@ -1,0 +1,199 @@
+import { Callout } from "nextra/components";
+
+# useLayoutEffect Hook in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  `useLayoutEffect` is a version of `useEffect` that fires synchronously after
+  all DOM mutations. It can be used to read layout from the DOM and
+  synchronously re-render. Updates scheduled inside `useLayoutEffect` will be
+  flushed synchronously, before the browser has a chance to paint.
+</Callout>
+
+## Detailed Explanation
+
+### What is useLayoutEffect?
+
+`useLayoutEffect` is a Hook in React that is similar to `useEffect`, but it fires synchronously after all DOM mutations. This means that it runs immediately after React has performed all DOM mutations, but before the browser has a chance to paint those changes.
+
+### Why does useLayoutEffect exist?
+
+`useLayoutEffect` exists to handle situations where you need to perform DOM measurements and mutations that should be applied synchronously before the browser repaints. It addresses scenarios where `useEffect` might cause flickering or unwanted visual artifacts due to its asynchronous nature.
+
+### For which purpose?
+
+**The main purposes of `useLayoutEffect` are**:
+
+1. **DOM Measurements**: When you need to measure the layout of DOM elements and use that information for rendering.
+
+2. **Synchronous DOM Mutations**: When you need to make DOM changes that should be applied before the browser paints.
+
+3. **Preventing Flickering**: In cases where `useEffect` might cause a brief flicker due to asynchronous updates.
+
+4. **Animations**: For certain types of animations that require precise timing with DOM updates.
+
+5. **Third-party DOM Library Integration**: When working with libraries that manipulate the DOM and require synchronous operations.
+
+## Code Examples
+
+### Basic useLayoutEffect Usage
+
+Here's a simple example demonstrating the use of `useLayoutEffect`:
+
+```jsx
+import React, { useLayoutEffect, useState, useRef } from "react";
+
+function Measure() {
+  const [width, setWidth] = useState(0);
+  const ref = useRef();
+
+  useLayoutEffect(() => {
+    setWidth(ref.current.clientWidth);
+  }, []);
+
+  return (
+    <div>
+      <div ref={ref}>Hello, world!</div>
+      <p>The above div is {width}px wide</p>
+    </div>
+  );
+}
+```
+
+In this example, `useLayoutEffect` is used to measure the width of a DOM element immediately after render, ensuring the measurement is accurate before the browser paints.
+
+### Comparing useEffect and useLayoutEffect
+
+This example shows the difference between `useEffect` and `useLayoutEffect`:
+
+```jsx
+import React, { useState, useEffect, useLayoutEffect } from "react";
+
+function ComparisonExample() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log("useEffect");
+  });
+
+  useLayoutEffect(() => {
+    console.log("useLayoutEffect");
+  });
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(c => c + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+
+In this example, you'll see that 'useLayoutEffect' is always logged before 'useEffect', demonstrating its synchronous nature.
+
+### Preventing Flicker
+
+Here's an example where `useLayoutEffect` prevents a flickering issue:
+
+```jsx
+import React, { useState, useLayoutEffect } from "react";
+
+function FlickerPrevention() {
+  const [width, setWidth] = useState(0);
+
+  useLayoutEffect(() => {
+    const newWidth = Math.random() * 100 + 100;
+    setWidth(newWidth);
+  }, []);
+
+  return (
+    <div style={{ width: width, margin: "0 auto", background: "red" }}>
+      <h2>Resize Me</h2>
+    </div>
+  );
+}
+```
+
+In this case, using `useLayoutEffect` ensures that the width is set before the component is painted, preventing any visible flickering that might occur if `useEffect` were used instead.
+
+## Best Practices
+
+1. **Prefer useEffect**: In most cases, `useEffect` is the right choice. Only use `useLayoutEffect` when `useEffect` causes visual problems.
+
+2. **Minimize Usage**: Because `useLayoutEffect` runs synchronously, overusing it can impact performance.
+
+3. **Be Cautious with SSR**: `useLayoutEffect` doesn't run during server-side rendering, which can lead to hydration mismatches.
+
+4. **Measure Performance**: Always measure the performance impact of using `useLayoutEffect` vs `useEffect`.
+
+5. **Keep it Simple**: Try to keep the logic inside `useLayoutEffect` as simple and fast as possible to avoid blocking the paint.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Overusing useLayoutEffect:
+
+   - Mistake: Using `useLayoutEffect` when `useEffect` would suffice.
+   - Why: This can unnecessarily block visual updates and impact performance.
+   - Solution: Only use `useLayoutEffect` when you specifically need its synchronous behavior.
+
+</Callout>
+
+<Callout>
+
+2. Complex Computations:
+
+   - Mistake: Performing heavy computations inside `useLayoutEffect`.
+   - Why: This can delay painting and cause performance issues.
+   - Solution: Keep the logic in `useLayoutEffect` minimal and move heavy computations elsewhere.
+
+</Callout>
+
+<Callout>
+
+3. Infinite Loops:
+
+   - Mistake: Updating state in `useLayoutEffect` without proper dependency array.
+   - Why: This can cause infinite re-renders.
+   - Solution: Ensure you have the correct dependencies in the dependency array.
+
+</Callout>
+
+<Callout>
+
+4. Server-Side Rendering Issues:
+   - Mistake: Relying on `useLayoutEffect` for critical rendering logic in SSR scenarios.
+   - Why: `useLayoutEffect` doesn't run on the server, which can cause hydration mismatches.
+   - Solution: Consider alternatives like `useEffect` with `useIsomorphicLayoutEffect` for SSR compatibility.
+
+</Callout>
+
+## Related Concepts
+
+1. **useEffect**: The asynchronous counterpart to `useLayoutEffect`.
+2. **React Rendering Lifecycle**: Understanding when different hooks and effects are called.
+3. **DOM Mutations**: Knowledge of how and when React applies changes to the DOM.
+4. **Browser Painting Process**: Understanding how browsers render content.
+5. **Server-Side Rendering**: Considerations when using `useLayoutEffect` with SSR.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [useLayoutEffect](https://react.dev/reference/react/useLayoutEffect): Official React documentation on useLayoutEffect.
+
+2. [useEffect vs useLayoutEffect](https://kentcdodds.com/blog/useeffect-vs-uselayouteffect): A detailed comparison by Kent C. Dodds.
+
+3. [A Visual Guide to useEffect and useLayoutEffect](https://alexsidorenko.com/blog/useeffect-uselayouteffect/): Animated explanations of the differences between these hooks.
+
+4. [React Hooks: The Complete Guide](https://react.dev/learn/synchronizing-with-effects): Comprehensive guide to React Hooks, including useLayoutEffect.
+
+5. [When to useLayoutEffect Instead of useEffect](https://daveceddia.com/useeffect-vs-uselayouteffect/): Practical advice on choosing between these hooks.
+
+6. [Understanding React's useLayoutEffect](https://blog.logrocket.com/useeffect-uselayouteffect-explained/): In-depth explanation of useLayoutEffect and its use cases.
+
+7. [React Hooks Pitfalls](https://reactjs.org/docs/hooks-faq.html#what-are-the-differences-between-useeffect-and-uselayouteffect): Official React FAQ addressing common issues with hooks, including useLayoutEffect.
+
+</Callout>

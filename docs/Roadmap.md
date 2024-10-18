@@ -4,17 +4,17 @@
 
 - [React Concepts Roadmap](#react-concepts-roadmap)
   - [Table of Contents](#table-of-contents)
-  - [Concepts](#concepts)
   - [Level 1](#level-1)
   - [Level 2](#level-2)
   - [Level 3](#level-3)
+  - [Level 4](#level-4)
   - [Color legend](#color-legend)
 
 ---
 
-## Concepts
+## Level 1
 
-1. **Introduction to React** 🟢
+1. **Introduction to React** 🟢 ✅
 
    - What is React?
    - How does it differ from VanillaJS + HTML?
@@ -24,14 +24,14 @@
      - Why was it created, in which context and for what purpose?
      - Which problems does it solve?
 
-2. **JSX** 🟢
+2. **JSX** 🟢 ✅
 
    - What is it?
    - Syntax and usage
    - Embedding expressions
    - JSX vs vanilla HTML
 
-3. **Components** 🟢
+3. **Components** 🟢 ✅
 
    - Functional Components
    - Class Components ⛔️ -> Why are functional Components preferred over class Components
@@ -39,7 +39,7 @@
    - children vs Children
    - Local State
 
-4. **State** 🟢
+4. **State** 🟢 💡 Revoir les exemples de codes (multiple State variables & Lifting State up)
 
    - What is what?
    - Global & local State (Refresh on the notion of Scope in JavaScript)
@@ -47,7 +47,7 @@
    - In which context?
    - For what purpose?
 
-5. **React Hooks and custom Hooks** 🟡
+5. **React Hooks and custom Hooks** 🟡 ✅
 
    - What is what?
    - Why and how to use each one?
@@ -61,9 +61,9 @@
 
 ---
 
-## Level 1
+## Level 2
 
-1. **Handling Events** 🟢
+1. **Handling Events** 🟢 ✅
 
    - Event handlers in React (vs in HTML)
    - Synthetic events
@@ -71,7 +71,7 @@
      - What they do?
      - Why do they exist in the first place?
 
-2. **Conditional Rendering** 🟢
+2. **Conditional Rendering** 🟢 ✅
 
    - If Statements
 
@@ -112,25 +112,25 @@
    }
    ```
 
-3. **Lists and Keys** 🟢
+3. **Lists and Keys** 🟢 ✅
 
    - Rendering lists (Arrays or Objects, What is a map and why it's super important?)
    - Importance of keys (Why do they exist? How uniqueness is of primary importance? What use React has of these?)
 
-4. **useState** 🟢
+4. **useState** 🟢 ✅
 
    - What is it?
    - Why does it exist?
    - For which purpose?
 
-5. **Forms in React** 🟡
+5. **Forms in React** 🟡 ✅ TODO: Revoir les exemples de codes
 
    - Controlled Components
    - Uncontrolled Components
    - formState
    - Refresh on HTML form, input, label, button tags and their APIs
 
-6. **Styling in React** 🟡
+6. **Styling in React** 🟡 ✅
    - Inline styles (React way -> bad)
    - Inline styles (Tailwind way -> Why does it exist? For which usage? In which context?)
    - CSS modules, SCSS, vanilla CSS, PostCSS (What is what? Why each does it exist? For which usage? In which context?)
@@ -138,9 +138,9 @@
 
 ---
 
-## Level 2
+## Level 3
 
-1. **useEffect** 🟡
+1. **useEffect** 🟡 ✅
 
    - What is it?
    - Why does it exist?
@@ -156,7 +156,7 @@
      - How is it handled in Functional Components?
      - What control do we have over it?
 
-2. **Context API & useContext** 🟡
+2. **Context API & useContext** 🟡 ✅
 
    - What is it?
    - Why does it exist?
@@ -165,7 +165,7 @@
    - Creating Providers and consuming context
    - useContext hook
 
-3. **useRef and forwardRef** 🟡
+3. **useRef and forwardRef** 🟡 TODO: A réexpliquer
 
    - What is it?
    - Why does it exist?
@@ -176,69 +176,69 @@
    - Accessing DOM nodes -> In other words, accessing the children from the parent component
    - Forwarding refs -> What are these? What do they allow? When to use one?
 
-4. **React Fragments**
+4. **React Fragments** 🟢 ✅
 
    - What are React Fragments?
    - Using <React.Fragment> vs. shorthand syntax <>
    - When and why to use Fragments
 
-5. **Composition pattern** 🟡
+5. **Composition pattern** 🟡 ✅
 
    - What is it?
    - What does it allow?
    - When to use it?
 
-6. **Render Props** 🟡
+6. **Render Props** 🟡 TODO: Réexpliquer les exemples, A quel moment on le met en place?
 
 - Pattern explanation
 - Comparison with HOCs
 
-7. **Testing React Applications** 🟡
+1. **Testing React Applications** 🟡 TODO: A expliquer
 
    - Why do we need to test our applications?
    - Jest
    - React Testing Library
    - Component testing strategies
 
-8. **Higher-Order Components (HOCs)** 🟠
+2. **Higher-Order Components (HOCs)** 🟠 TODO: Revoir les exemples de code
 
    - Concept and usage
    - Why do we need these?
    - When to leverage them?
 
-9. **useReducer** 🟠
+3. **useReducer** 🟠 TODO: Revoir les exemples de code (useReducer with Complex State)
 
    - What is it?
    - Why does it exist?
    - For which purpose?
 
-10. **Error Boundaries** 🟠
+4. **Error Boundaries** 🟠 TODO: A quel moment on l'utilise? L'utilise-t-on tout le temps? Exemple concret
 
-    - Catching JavaScript errors
-    - Fallback UI
+   - Catching JavaScript errors
+   - Fallback UI
 
-11. **Loading State** 🟠
+5. **Loading State** 🟠 TODO: A revoir(Gérer l'état de chargement, donner un feedback à l'utilisateur)
 
-    - Handling loading States
-    - Fallback UI
+   - Handling loading States
+   - Fallback UI
 
-12. **Portals** 🟠
+6. **Portals** 🟠 TODO: A Expliquer
 
-    - What are these? Why do we need portals?
-    - Rendering children into different DOM subtrees
+   - What are these? Why do we need portals?
+   - Rendering children into different DOM subtrees
 
-13. **Code Splitting** 🟠
+7. **Code Splitting** 🟠 TODO: A réexpliquer (pour améliorer les performances des applications )
 
-    - Dynamic imports
-    - React.lazy and Suspense
+   - Dynamic imports
+   - React.lazy and Suspense
 
-14. **useLayoutEffect** 🟣
+8. **useLayoutEffect** 🟣 TODO: A revoir (version de useEffect qui fonctionne de manière synchrone, cad immédiatement, le reste du programme attend avant de s'executer)
 
-    - What is it?
-    - Why does it exist?
-    - For which purpose?
+   - What is it?
+   - Why does it exist?
+   - For which purpose?
 
-15. **useImperativeHandle** 🟣
+9. **useImperativeHandle** TODO: A expliquer
 
 - What is it?
 - Why does it exist?
@@ -247,9 +247,9 @@
 
 ---
 
-## Level 3
+## Level 4
 
-1. **React Router** 🟡
+1. **React Router** 🟡 (Bibliothèque React pour la navigation)
 
    - Setting up routes
    - Navigation
@@ -284,8 +284,8 @@
 
 ## Color legend
 
-- 🟢: Must have
-- 🟡: Should have
-- 🟠: Could have
-- 🟣: Won't have for now
-- 🔴: Deprecated or to be avoided
+- 🟢: L1 - Junior
+- 🟡: L2 - Mid leve
+- 🟠: L3 - Denior
+- 🟣: L4 - Lead
+- 🔴: L5 - Lead or Principal

@@ -1,0 +1,238 @@
+import { Callout } from "nextra/components";
+
+# React Components
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  React Components are reusable, self-contained pieces of UI. They can be as
+  simple as a button or as complex as an entire page. Components can be composed
+  together to create more complex UIs, promoting code reuse and separation of
+  concerns.
+</Callout>
+
+## Detailed Explanation
+
+### What are React Components?
+
+React Components are JavaScript functions or classes that return a piece of UI (User Interface). They encapsulate the structure (JSX), behavior (event handlers), and sometimes the style of a part of your application.
+
+### Types of Components
+
+1. **Functional Components**:
+
+   - JavaScript functions that return JSX
+   - Simpler and more concise
+   - Can use Hooks for state and lifecycle features
+
+2. **Class Components**:
+   - JavaScript classes that extend `React.Component`
+   - Have their own state and lifecycle methods
+   - Less commonly used in modern React development
+
+<Callout emoji='🔍'>
+  While both types are still supported, functional components are generally
+  preferred in modern React development due to their simplicity and the
+  introduction of Hooks.
+</Callout>
+
+### Key Concepts in React Components
+
+1. **Props**:
+
+   - Short for "properties"
+   - How parent components pass data to child components
+   - Read-only in the child component
+
+2. **State**:
+
+   - Data that can change over time
+   - Managed within the component (for class components) or with Hooks (for functional components)
+
+3. **Lifecycle** (for class components):
+
+   - Methods that run at different stages of a component's life
+   - E.g., `componentDidMount`, `componentDidUpdate`, `componentWillUnmount`
+
+4. **Hooks** (for functional components):
+   - Functions that let you use state and other React features without writing a class
+   - E.g., `useState`, `useEffect`, `useContext`
+
+### Why Use Components?
+
+1. **Reusability**: Components can be reused throughout your application, reducing code duplication.
+2. **Maintainability**: By breaking your UI into components, you make your code more modular and easier to maintain.
+3. **Separation of Concerns**: Each component can focus on a specific part of the UI, making your code more organized.
+4. **Testing**: Components can be tested in isolation, making it easier to write and maintain tests.
+
+## Code Examples
+
+### 1. Basic Functional Component
+
+```jsx
+import React from "react";
+
+function Greeting(props) {
+  return <h1>Hello, {props.name}!</h1>;
+}
+
+export default Greeting;
+```
+
+This simple functional component takes a `name` prop and renders a greeting.
+
+### 2. Basic Class Component
+
+```jsx
+import React from "react";
+
+class Greeting extends React.Component {
+  render() {
+    return <h1>Hello, {this.props.name}!</h1>;
+  }
+}
+
+export default Greeting;
+```
+
+This class component does the same thing as the functional component above.
+
+### 3. Component with State (using Hooks)
+
+```jsx
+import React, { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+
+export default Counter;
+```
+
+This functional component uses the `useState` Hook to manage its own state.
+
+### 4. Component Composition
+
+```jsx
+import React from "react";
+
+function Header() {
+  return <header>My App Header</header>;
+}
+
+function Footer() {
+  return <footer>© 2023 My App</footer>;
+}
+
+function Content() {
+  return <main>This is the main content</main>;
+}
+
+function App() {
+  return (
+    <div>
+      <Header />
+      <Content />
+      <Footer />
+    </div>
+  );
+}
+
+export default App;
+```
+
+This example shows how smaller components (`Header`, `Content`, `Footer`) can be composed into a larger component (`App`).
+
+<Callout emoji='🧩'>
+  Component composition is a powerful feature in React. It allows you to build
+  complex UIs from simpler, reusable parts. This approach makes your code more
+  maintainable and easier to understand.
+</Callout>
+
+## Best Practices
+
+1. **Keep Components Small and Focused**: Each component should ideally do one thing well.
+2. **Use Functional Components and Hooks**: They're simpler and cover most use cases.
+3. **Use Default Props**: Provide default values for props to make components more robust.
+4. **Follow the Single Responsibility Principle**: Each component should have a single reason to change.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Modifying Props:
+
+   - Mistake: Trying to change prop values directly within a component.
+   - Why: Props are meant to be read-only. Modifying them can lead to unexpected behavior.
+   - Solution: If you need to modify data passed down as props, consider lifting the state up or using a state management solution.
+
+</Callout>
+
+<Callout>
+
+2. Overusing Class Components:
+
+   - Mistake: Using class components when functional components would suffice.
+   - Why: Class components are more verbose and can be harder to understand and test.
+   - Solution: Prefer functional components with Hooks for most cases.
+
+</Callout>
+
+<Callout>
+
+3. Not Using Keys in Lists:
+
+   - Mistake: Rendering lists of elements without providing a unique `key` prop.
+   - Why: Keys help React identify which items have changed, been added, or been removed.
+   - Solution: Always provide a unique key when rendering lists of elements.
+
+</Callout>
+
+<Callout>
+
+4. Mutating State Directly:
+   - Mistake: Changing state without using `setState` or the state updater function.
+   - Why: React may not re-render the component, leading to unexpected behavior.
+   - Solution: Always use `setState` (in class components) or the state updater function (in functional components with `useState`).
+
+</Callout>
+
+## Related Concepts
+
+1. **JSX**: The syntax used to describe the UI in React components.
+2. **Virtual DOM**: React's mechanism for efficiently updating the UI, closely tied to how components work.
+3. **React Hooks**: Functions that let you use state and other React features in functional components.
+4. **Higher-Order Components (HOCs)**: Advanced pattern for reusing component logic.
+5. **Context API**: A way to pass data through the component tree without passing props manually at every level.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Your First Component](https://react.dev/learn/your-first-component):
+   Official React documentation on creating your first component.
+
+2. [Passing
+   Props to a Component](https://react.dev/learn/passing-props-to-a-component):
+   Learn how to use props in React components.
+
+3. [Conditional
+   Rendering](https://react.dev/learn/conditional-rendering): Guide on rendering
+   components conditionally.
+
+4. [Rendering
+   Lists](https://react.dev/learn/rendering-lists): Learn how to render lists of
+   components.
+
+5. [Keeping Components
+   Pure](https://react.dev/learn/keeping-components-pure): Understand the
+   importance of pure components in React.
+
+</Callout>

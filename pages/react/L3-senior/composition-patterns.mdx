@@ -1,0 +1,199 @@
+import { Callout } from "nextra/components";
+
+# Composition Pattern in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  The Composition pattern in React refers to the practice of creating components
+  that can be easily combined and nested to build complex UIs. It emphasizes
+  creating small, focused components that can be composed together, rather than
+  large, monolithic components.
+</Callout>
+
+## Detailed Explanation
+
+### What is the Composition pattern?
+
+The Composition pattern in React is an approach to building user interfaces where components are designed to be flexible, reusable, and easily combined. Instead of creating large, complex components that handle many responsibilities, the Composition pattern encourages developers to create smaller, more focused components that can be composed together to create complex UIs.
+
+### What does it allow?
+
+**The Composition pattern allows for**:
+
+1. **Greater flexibility**: Components can be easily rearranged and reused in different contexts.
+2. **Improved readability**: Smaller, focused components are often easier to understand and maintain.
+3. **Better separation of concerns**: Each component can focus on doing one thing well.
+4. **Easier testing**: Smaller components with clear responsibilities are typically easier to test.
+5. **Enhanced reusability**: Well-composed components can be reused across different parts of an application or even in different projects.
+
+### When to use it?
+
+**You should consider using the Composition pattern**:
+
+1. When you find yourself creating large, complex components that are difficult to understand or maintain.
+2. When you notice duplicate code across different components.
+3. When you need to create flexible layouts that can adapt to different contexts.
+4. When you want to improve the reusability of your components.
+5. When you're building a component library or design system.
+
+## Code Examples
+
+### Basic Composition
+
+Here's a simple example of composition:
+
+```jsx
+function Button({ children, ...props }) {
+  return <button {...props}>{children}</button>;
+}
+
+function IconButton({ icon, children, ...props }) {
+  return (
+    <Button {...props}>
+      {icon} {children}
+    </Button>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <Button>Click me</Button>
+      <IconButton icon={<span>🚀</span>}>Launch</IconButton>
+    </div>
+  );
+}
+```
+
+In this example, `IconButton` composes `Button`, adding an icon to it.
+
+### Composition with Children Prop
+
+The `children` prop is a powerful tool for composition:
+
+```jsx
+function Card({ title, children }) {
+  return (
+    <div className='card'>
+      <h2>{title}</h2>
+      <div className='card-content'>{children}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Card title='Welcome'>
+      <p>This is some content inside the card.</p>
+      <Button>Click me</Button>
+    </Card>
+  );
+}
+```
+
+Here, `Card` is a generic container that can wrap any content passed as its children.
+
+### Specialized Components
+
+You can create specialized components by composing more generic ones:
+
+```jsx
+function Dialog({ title, content, onClose }) {
+  return (
+    <Card title={title}>
+      <p>{content}</p>
+      <Button onClick={onClose}>Close</Button>
+    </Card>
+  );
+}
+
+function App() {
+  return (
+    <Dialog
+      title='Terms of Service'
+      content="By clicking 'I agree', you agree to our terms of service."
+      onClose={() => console.log("Dialog closed")}
+    />
+  );
+}
+```
+
+In this example, `Dialog` is a more specialized version of `Card`.
+
+## Best Practices
+
+1. **Keep components focused**: Each component should ideally do one thing well.
+2. **Use the children prop**: It's a powerful way to create flexible, reusable components.
+3. **Prefer composition over inheritance**: In React, composition is generally more flexible than inheritance.
+4. **Design for reusability**: When creating components, think about how they might be used in different contexts.
+5. **Use propTypes or TypeScript**: This helps ensure that composed components are used correctly.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Overcomplicating Simple Components:
+
+   - Mistake: Breaking down components into too many small pieces.
+   - Why: This can lead to unnecessary complexity and make the codebase harder to navigate.
+   - Solution: Strike a balance. Components should be small enough to be reusable but large enough to be meaningful.
+
+</Callout>
+
+<Callout>
+
+2. Prop Drilling:
+
+   - Mistake: Passing props through many levels of components.
+   - Why: This can make your code harder to maintain and understand.
+   - Solution: Consider using Context API or state management libraries for deeply nested data.
+
+</Callout>
+
+<Callout>
+
+3. Inflexible Component Design:
+
+   - Mistake: Creating components that are too specific and hard to reuse.
+   - Why: This defeats the purpose of composition and leads to duplicate code.
+   - Solution: Design components to be as generic and flexible as possible, using props to specialize their behavior.
+
+</Callout>
+
+<Callout>
+
+4. Overusing HOCs or Render Props:
+   - Mistake: Using Higher-Order Components or Render Props when simple composition would suffice.
+   - Why: These patterns can add unnecessary complexity.
+   - Solution: Start with basic composition, and only reach for more advanced patterns when needed.
+
+</Callout>
+
+## Related Concepts
+
+1. **Higher-Order Components (HOCs)**: Another pattern for component reuse, often used alongside composition.
+2. **Render Props**: A pattern that uses a prop whose value is a function to share code between components.
+3. **Context API**: Can be used with composition to avoid prop drilling.
+4. **Hooks**: Custom hooks are another way to compose behavior in React.
+5. **Container and Presentational Components**: A pattern that separates data fetching and rendering, often implemented through composition.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Composition vs Inheritance](https://react.dev/learn/composition-vs-inheritance): Official React documentation on why composition is preferred over inheritance.
+
+2. [Passing JSX as children](https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children): Guide on using the children prop for composition.
+
+3. [Extracting Components](https://react.dev/learn/extracting-components): Learn how to break down components, which is key to effective composition.
+
+4. [Thinking in React](https://react.dev/learn/thinking-in-react): A guide that touches on component composition as part of the React mindset.
+
+5. [A deep dive into children in React](https://mxstbr.blog/2017/02/react-children-deepdive/): An in-depth look at the children prop and its uses in composition.
+
+6. [React Composition Patterns](https://www.robinwieruch.de/react-component-composition/): A comprehensive guide to various composition patterns in React.
+
+7. [Composing Components](https://dev.to/bouhm/thinking-in-react-component-composition-fp5): A practical guide to component composition in React.
+
+</Callout>

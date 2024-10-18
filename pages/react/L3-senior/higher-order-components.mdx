@@ -1,0 +1,231 @@
+import { Callout } from "nextra/components";
+
+# Higher-Order Components (HOCs) in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  A Higher-Order Component (HOC) is an advanced technique in React for reusing
+  component logic. It's not a part of the React API, but a pattern that emerges
+  from React's compositional nature. Essentially, a HOC is a function that takes
+  a component and returns a new component with some additional functionality.
+</Callout>
+
+## Detailed Explanation
+
+### Concept and Usage
+
+A Higher-Order Component is a function that takes a component as an argument and returns a new component that wraps the original one. The HOC adds some additional functionality or props to the wrapped component.
+
+The basic structure of a HOC looks like this:
+
+```javascript
+function withExtraFunctionality(WrappedComponent) {
+  return function (props) {
+    // Add extra functionality here
+    return <WrappedComponent {...props} />;
+  };
+}
+```
+
+You would use it like this:
+
+```javascript
+const EnhancedComponent = withExtraFunctionality(OriginalComponent);
+```
+
+### Why do we need these?
+
+While Hooks have largely replaced the need for HOCs in modern React development, understanding HOCs is still valuable:
+
+1. **Legacy Codebase Maintenance**: Many existing React projects still use HOCs.
+2. **Complex Compositions**: Some scenarios might be more elegantly solved with HOCs than with Hooks.
+3. **Library Integration**: Some third-party libraries still use the HOC pattern.
+4. **Cross-Cutting Concerns**: HOCs can be useful for applying consistent behavior across many components.
+
+### When to leverage them?
+
+Consider using HOCs in the following scenarios:
+
+1. **When working with class components in legacy code**: HOCs can be a powerful tool for code reuse with class components.
+2. **For complex prop manipulations**: When you need to significantly transform props passed to a component.
+3. **When integrating with certain external libraries**: Some libraries still use the HOC pattern for React integration.
+4. **When you need to wrap the entire component**: Unlike Hooks, HOCs can wrap the entire component, including its lifecycle or effects.
+
+## Code Examples
+
+### Basic HOC Example
+
+Here's a simple HOC that adds a loading state to a component:
+
+```jsx
+import React, { useState, useEffect } from "react";
+
+function withLoading(WrappedComponent) {
+  return function (props) {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+      const timer = setTimeout(() => setIsLoading(false), 2000);
+      return () => clearTimeout(timer);
+    }, []);
+
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+    return <WrappedComponent {...props} />;
+  };
+}
+
+// Usage
+const MyComponent = ({ name }) => <div>Hello, {name}!</div>;
+const MyComponentWithLoading = withLoading(MyComponent);
+
+// In your app
+function App() {
+  return <MyComponentWithLoading name='John' />;
+}
+```
+
+### HOC with Additional Props
+
+This HOC adds an extra prop to the wrapped component:
+
+```jsx
+import React from "react";
+
+function withExtraProp(WrappedComponent) {
+  return function (props) {
+    return (
+      <WrappedComponent
+        {...props}
+        extraProp='I am an extra prop!'
+      />
+    );
+  };
+}
+
+// Usage
+const MyComponent = ({ name, extraProp }) => (
+  <div>
+    <p>Hello, {name}!</p>
+    <p>{extraProp}</p>
+  </div>
+);
+
+const EnhancedComponent = withExtraProp(MyComponent);
+
+// In your app
+function App() {
+  return <EnhancedComponent name='John' />;
+}
+```
+
+### Composing Multiple HOCs
+
+You can compose multiple HOCs together:
+
+```jsx
+import React from "react";
+import { compose } from "redux"; // or implement your own compose function
+
+const withLoading = WrappedComponent => props => {
+  // ... loading logic here
+};
+
+const withExtraProp = WrappedComponent => props => {
+  // ... extra prop logic here
+};
+
+const enhance = compose(
+  withLoading,
+  withExtraProp
+  // more HOCs...
+);
+
+const MyComponent = ({ name, extraProp }) => (
+  <div>
+    <p>Hello, {name}!</p>
+    <p>{extraProp}</p>
+  </div>
+);
+
+const EnhancedComponent = enhance(MyComponent);
+
+function App() {
+  return <EnhancedComponent name='John' />;
+}
+```
+
+## Best Practices
+
+1. **Use Functional Components**: When creating HOCs, use functional components and hooks instead of class components.
+2. **Pass Unrelated Props Through**: HOCs should pass through props that are unrelated to their specific concern.
+3. **Maximize Composability**: HOCs should be composable with other HOCs.
+4. **Use Meaningful Display Names**: Use the `React.displayName` property for easier debugging.
+5. **Don't Use HOCs Inside the Render Method**: Apply HOCs outside the component definition.
+6. **Handle Ref Properly**: Use the `React.forwardRef` API to forward refs to the wrapped component.
+7. **Consider Hooks First**: For new code, consider if the same functionality can be achieved more simply with hooks.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Overusing HOCs:
+
+   - Mistake: Using HOCs for every small piece of shared functionality.
+   - Why: This can lead to "wrapper hell" and make your component tree unnecessarily deep.
+   - Solution: Consider using Hooks or other patterns for simpler cases of code reuse.
+
+</Callout>
+
+<Callout>
+
+2. Props Collision:
+
+   - Mistake: Not handling potential prop name collisions between different HOCs.
+   - Why: This can lead to props being accidentally overwritten.
+   - Solution: Be explicit about prop names and consider using a namespace for HOC-specific props.
+
+</Callout>
+
+<Callout>
+
+3. Losing Component Identity:
+
+   - Mistake: Not preserving the original component's name and prop-types.
+   - Why: This can make debugging more difficult.
+   - Solution: Use the `React.displayName` property and forward prop-types and default props.
+
+</Callout>
+
+<Callout>
+
+4. Performance Concerns:
+   - Mistake: Creating new components in the render method.
+   - Why: This can lead to unnecessary re-renders and negatively impact performance.
+   - Solution: Create HOC-wrapped components outside of the render method.
+
+</Callout>
+
+## Related Concepts
+
+1. **Render Props**: Another pattern for sharing code between React components.
+2. **React Hooks**: Introduced in React 16.8 as a simpler alternative to HOCs and render props.
+3. **Function Composition**: The programming concept that HOCs are based on.
+4. **Decorators**: A proposed JavaScript feature that can be used to implement HOCs more elegantly.
+5. **Custom Hooks**: A modern alternative to HOCs for reusing stateful logic between components.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Higher-Order Components](https://reactjs.org/docs/higher-order-components.html): Official React documentation on HOCs (note: this is from the older React docs).
+
+2. [React Patterns](https://reactpatterns.com/): A collection of React patterns, including HOCs.
+
+3. [Reusing Logic with Custom Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks): An alternative to HOCs for reusing component logic.
+
+4. [Higher Order Components in React](https://www.robinwieruch.de/react-higher-order-components/): A comprehensive guide to understanding and implementing HOCs.
+
+</Callout>

@@ -1,0 +1,102 @@
+import { Callout } from "nextra/components";
+import { Quiz } from "../../../components/Quiz";
+import { ProgressTracker } from "../../../components/ProgressTracker";
+import { CodingChallenge } from "../../../components/CodingChallenge";
+
+# Introduction to React - Exercises
+
+<ProgressTracker
+  section={1}
+  completedTasks={0}
+  totalTasks={5}
+/>
+
+<Callout emoji='📚'>
+  Before attempting these exercises, make sure you've read through the
+  [Introduction to
+  React](http://localhost:3000/react/L1-junior/introduction-to-react)
+  documentation.
+</Callout>
+
+## Quiz
+
+Test your knowledge with these quick questions:
+
+<Quiz
+  question='What is the primary building block of React applications?'
+  options={["Functions", "Classes", "Components", "Modules"]}
+  correctAnswer='Components'
+/>
+
+<Quiz
+  question='Which of the following is NOT a key concept in React?'
+  options={[
+    "Virtual DOM",
+    "Two-way Data Binding",
+    "JSX",
+    "Component-Based Architecture"
+  ]}
+  correctAnswer='Two-way Data Binding'
+/>
+
+## Coding Challenges
+
+### 1. Create a Simple React Component
+
+Create a functional component called `Greeting` that takes a `name` prop and renders "Hello, [name]!".
+
+<CodingChallenge
+  initialCode={`
+function Greeting(props) {
+  // Your code here
+}
+
+// Render the component
+render(<Greeting name="React Learner" />);
+`}
+  solution={`
+function Greeting(props) {
+return <h1>Hello, {props.name}!</h1>;
+}
+
+// Render the component
+render(<Greeting name="React Learner" />);
+`}
+/>
+
+### 2. Implement a Toggle Button
+
+Create a functional component called `ToggleButton` that toggles between "ON" and "OFF" when clicked.
+
+<CodingChallenge
+  initialCode={`
+function ToggleButton() {
+  // Your code here
+}
+
+// Render the component
+render(<ToggleButton />);
+`}
+  solution={`
+function ToggleButton() {
+const [isOn, setIsOn] = React.useState(false);
+
+return (
+
+<button onClick={() => setIsOn(!isOn)}>{isOn ? "ON" : "OFF"}</button>
+); }
+
+// Render the component
+render(<ToggleButton />);
+`}
+/>
+
+## Further Practice
+
+For more hands-on practice:
+
+1. Try creating a counter component that increments and decrements a value.
+2. Experiment with passing different types of props (strings, numbers, functions) to your components.
+3. Create a simple form component that captures user input and displays it.
+
+Remember, practice is key to mastering React concepts. Keep coding and don't hesitate to refer back to the documentation!

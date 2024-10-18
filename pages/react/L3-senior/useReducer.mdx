@@ -1,0 +1,250 @@
+import { Callout } from "nextra/components";
+
+# useReducer Hook in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  `useReducer` is a React hook that provides an alternative to `useState` for
+  managing complex state logic in functional components. It's particularly
+  useful when the next state depends on the previous one, or when you have
+  multiple sub-values in your state.
+</Callout>
+
+## Detailed Explanation
+
+### What is useReducer?
+
+`useReducer` is a hook that allows you to manage state in your React components using a reducer function. It's similar to how Redux manages state, but scoped to a single component.
+
+The basic syntax of `useReducer` is:
+
+```javascript
+const [state, dispatch] = useReducer(reducer, initialState);
+```
+
+Where:
+
+- `state` is the current state
+- `dispatch` is a function to trigger state updates
+- `reducer` is a function that specifies how the state gets updated
+- `initialState` is the initial value of the state
+
+### Why does useReducer exist?
+
+`useReducer` exists to address several needs in React development:
+
+1. **Managing Complex State Logic**: When state logic becomes too complex for `useState`, `useReducer` provides a more structured way to manage it.
+
+2. **Predictable State Updates**: By centralizing state update logic in a reducer function, state changes become more predictable and easier to understand.
+
+3. **Optimization**: For components with complex state logic, `useReducer` can lead to better performance than `useState`.
+
+4. **Testing**: Reducer functions are pure functions, making them easy to test in isolation.
+
+### For which purpose?
+
+The main purposes of `useReducer` are:
+
+1. **Managing Complex State**: When your state contains multiple sub-values or when the next state depends on the previous one.
+
+2. **Centralizing Update Logic**: To keep all your state update logic in one place, making it easier to understand and maintain.
+
+3. **Sharing Logic**: Reducer functions can be shared between components, promoting code reuse.
+
+4. **Implementing Undo/Redo**: The predictable nature of reducers makes it easier to implement features like undo/redo.
+
+5. **Optimizing Performance**: For components that trigger many state updates, `useReducer` can be more efficient than `useState`.
+
+## Code Examples
+
+### Basic useReducer Example
+
+Here's a simple counter implemented with `useReducer`:
+
+```jsx
+import React, { useReducer } from "react";
+
+const initialState = { count: 0 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    case "decrement":
+      return { count: state.count - 1 };
+    default:
+      throw new Error();
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({ type: "increment" })}>+</button>
+      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+    </>
+  );
+}
+```
+
+### useReducer with Complex State
+
+Here's an example of managing a more complex state with `useReducer`:
+
+```jsx
+import React, { useReducer } from "react";
+
+const initialState = {
+  name: "",
+  email: "",
+  isSubmitting: false,
+  error: null
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "field":
+      return { ...state, [action.field]: action.value };
+    case "submit":
+      return { ...state, isSubmitting: true, error: null };
+    case "success":
+      return { ...state, isSubmitting: false };
+    case "error":
+      return { ...state, isSubmitting: false, error: action.error };
+    default:
+      return state;
+  }
+}
+
+function Form() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    dispatch({ type: "submit" });
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      dispatch({ type: "success" });
+    } catch (error) {
+      dispatch({ type: "error", error: error.message });
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type='text'
+        value={state.name}
+        onChange={e =>
+          dispatch({
+            type: "field",
+            field: "name",
+            value: e.target.value
+          })
+        }
+      />
+      <input
+        type='email'
+        value={state.email}
+        onChange={e =>
+          dispatch({
+            type: "field",
+            field: "email",
+            value: e.target.value
+          })
+        }
+      />
+      <button
+        type='submit'
+        disabled={state.isSubmitting}
+      >
+        Submit
+      </button>
+      {state.error && <p>{state.error}</p>}
+    </form>
+  );
+}
+```
+
+## Best Practices
+
+1. **Keep Reducers Pure**: Reducers should be pure functions without side effects.
+
+2. **Use Action Constants**: Define action types as constants to avoid typos and make maintenance easier.
+
+3. **Combine useReducer with useContext**: For managing global state across components.
+
+4. **Split Reducers**: For complex state, consider splitting your reducer into smaller, more manageable functions.
+
+5. **Use Immer**: Consider using Immer with `useReducer` for easier state updates, especially with nested state.
+
+6. **Initialize State Lazily**: Use the lazy initialization form of `useReducer` for expensive initial state computations.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Overusing useReducer:
+
+   - Mistake: Using `useReducer` for simple state that could be managed with `useState`.
+   - Why: This can overcomplicate your code unnecessarily.
+   - Solution: Use `useReducer` only when state logic becomes sufficiently complex.
+
+</Callout>
+
+<Callout>
+
+2. Mutating State in Reducer:
+
+   - Mistake: Directly modifying state in the reducer instead of returning a new state object.
+   - Why: This can lead to unexpected behavior and break React's rendering optimizations.
+   - Solution: Always return a new state object, using the spread operator or Object.assign().
+
+</Callout>
+
+<Callout>
+
+3. Forgetting to Handle All Action Types:
+
+   - Mistake: Not including a default case in the reducer switch statement.
+   - Why: This can lead to silent failures when an unknown action type is dispatched.
+   - Solution: Always include a default case that either returns the current state or throws an error.
+
+</Callout>
+
+<Callout>
+
+4. Putting Too Much Logic in Reducers:
+   - Mistake: Including complex business logic or side effects in reducers.
+   - Why: This makes reducers harder to test and understand.
+   - Solution: Keep reducers focused on state updates. Use other hooks or functions for complex logic.
+
+</Callout>
+
+## Related Concepts
+
+1. **useState**: The simpler state management hook that `useReducer` builds upon.
+2. **Redux**: A popular state management library that uses the reducer pattern.
+3. **Context API**: Often used in conjunction with `useReducer` for global state management.
+4. **Finite State Machines**: The reducer pattern is similar to the concept of state machines.
+5. **Immutable Update Patterns**: Important for correctly updating state in reducers.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [useReducer](https://react.dev/reference/react/useReducer): Official React documentation on the useReducer hook.
+
+2. [Extracting State Logic into a Reducer](https://react.dev/learn/extracting-state-logic-into-a-reducer): Guide on when and how to use reducers in React.
+
+3. [useReducer vs useState](https://react.dev/learn/extracting-state-logic-into-a-reducer#comparing-usestate-and-usereducer): Comparison between useReducer and useState.
+
+4. [A Complete Guide to useReducer](https://daveceddia.com/usereducer-hook-examples/): Comprehensive guide to understanding and using useReducer.
+
+5. [How to implement useState with useReducer](https://kentcdodds.com/blog/how-to-implement-usestate-with-usereducer): An article that helps understand useReducer by implementing useState with it.
+
+</Callout>

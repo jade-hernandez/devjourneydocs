@@ -1,0 +1,278 @@
+import { Callout } from "nextra/components";
+
+# Performance Optimization in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  Performance optimization in React involves techniques and tools to improve the
+  efficiency and responsiveness of React applications. This includes using hooks
+  like useMemo and useCallback, higher-order components like memo, and
+  diagnostic tools like the Profiler API.
+</Callout>
+
+## Detailed Explanation
+
+### useMemo
+
+`useMemo` is a hook that memoizes the result of a computation. It's useful for expensive calculations that don't need to be re-run on every render.
+
+```jsx
+const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+```
+
+Use `useMemo` when:
+
+- You have a computationally expensive operation
+- The operation depends on props or state that don't change often
+- You want to avoid unnecessary re-computations
+
+### useCallback
+
+`useCallback` is similar to `useMemo`, but it memoizes callback functions instead of values.
+
+```jsx
+const memoizedCallback = useCallback(() => {
+  doSomething(a, b);
+}, [a, b]);
+```
+
+Use `useCallback` when:
+
+- You're passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders
+- The callback is used in an effect's dependency array
+
+### memo
+
+`memo` is a higher-order component that can be used to wrap components that don't need to re-render when their parent re-renders, as long as their props haven't changed.
+
+```jsx
+const MemoizedComponent = memo(MyComponent);
+```
+
+Use `memo` when:
+
+- Your component renders often with the same props
+- Your component is expensive to render
+- You want to prevent unnecessary re-renders of child components
+
+### Profiler API
+
+The Profiler API is a tool for measuring rendering performance in React applications.
+
+What is it?
+
+- A built-in profiling tool in React for measuring rendering performance
+
+Why does it exist?
+
+- To help developers identify performance bottlenecks in React applications
+- To provide detailed timing information about component rendering
+
+For which purpose?
+
+- Measuring the frequency and duration of component renders
+- Identifying which parts of an application are slow and need optimization
+- Comparing performance before and after optimization attempts
+
+## Code Examples
+
+### useMemo Example
+
+```jsx
+import React, { useMemo, useState } from "react";
+
+function ExpensiveComponent({ data, filter }) {
+  const filteredData = useMemo(() => {
+    console.log("Filtering data...");
+    return data.filter(item => item.includes(filter));
+  }, [data, filter]);
+
+  return (
+    <ul>
+      {filteredData.map(item => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  );
+}
+
+function App() {
+  const [data] = useState(["apple", "banana", "cherry", "date"]);
+  const [filter, setFilter] = useState("");
+
+  return (
+    <div>
+      <input
+        value={filter}
+        onChange={e => setFilter(e.target.value)}
+        placeholder='Filter fruits'
+      />
+      <ExpensiveComponent
+        data={data}
+        filter={filter}
+      />
+    </div>
+  );
+}
+```
+
+### useCallback Example
+
+```jsx
+import React, { useState, useCallback } from "react";
+
+const ExpensiveComponent = React.memo(({ onClick }) => {
+  console.log("ExpensiveComponent rendered");
+  return <button onClick={onClick}>Click me</button>;
+});
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = useCallback(() => {
+    console.log("Button clicked");
+  }, []);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <ExpensiveComponent onClick={handleClick} />
+    </div>
+  );
+}
+```
+
+### memo Example
+
+```jsx
+import React, { useState, memo } from "react";
+
+const ExpensiveComponent = memo(({ data }) => {
+  console.log("ExpensiveComponent rendered");
+  return <div>{data.join(", ")}</div>;
+});
+
+function App() {
+  const [count, setCount] = useState(0);
+  const [data] = useState(["apple", "banana", "cherry"]);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <ExpensiveComponent data={data} />
+    </div>
+  );
+}
+```
+
+### Profiler API Example
+
+```jsx
+import React, { Profiler } from "react";
+
+function onRenderCallback(
+  id, // the "id" prop of the Profiler tree that has just committed
+  phase, // either "mount" (if the tree just mounted) or "update" (if it re-rendered)
+  actualDuration, // time spent rendering the committed update
+  baseDuration, // estimated time to render the entire subtree without memoization
+  startTime, // when React began rendering this update
+  commitTime, // when React committed this update
+  interactions // the Set of interactions belonging to this update
+) {
+  console.log(`${id} phase: ${phase}`);
+  console.log(`Actual duration: ${actualDuration}`);
+}
+
+function App() {
+  return (
+    <Profiler
+      id='App'
+      onRender={onRenderCallback}
+    >
+      <MyComponent />
+    </Profiler>
+  );
+}
+```
+
+## Best Practices
+
+1. **Measure First**: Always profile your application before optimizing. Don't optimize prematurely.
+
+2. **Use Production Builds**: Always test performance using production builds of React.
+
+3. **Virtualize Long Lists**: Use libraries like `react-window` for rendering large lists efficiently.
+
+4. **Avoid Inline Function Definitions**: Define functions outside the render method to prevent unnecessary re-creation.
+
+5. **Lazy Loading**: Use `React.lazy()` and `Suspense` for code-splitting and lazy loading components.
+
+6. **Debounce and Throttle**: Use these techniques for handling frequent updates (e.g., search inputs).
+
+7. **Optimize Context**: Be mindful of when context values change to prevent unnecessary re-renders.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Over-optimization:
+
+   - Mistake: Applying performance optimizations everywhere without measuring.
+   - Why: This can lead to more complex, harder to maintain code without significant performance gains.
+   - Solution: Profile first, optimize where it matters most.
+
+</Callout>
+
+<Callout>
+
+2. Incorrect Dependency Arrays:
+
+   - Mistake: Not including all necessary dependencies in useMemo and useCallback.
+   - Why: This can lead to stale closures and incorrect memoization.
+   - Solution: Ensure all variables used in the callback are included in the dependency array.
+
+</Callout>
+
+<Callout>
+
+3. Misusing memo:
+
+   - Mistake: Wrapping every component with memo.
+   - Why: This can actually decrease performance due to the overhead of prop comparison.
+   - Solution: Use memo only for components that render often with the same props.
+
+</Callout>
+
+<Callout>
+
+4. Ignoring the Virtual DOM:
+   - Mistake: Manually manipulating the DOM instead of letting React handle it.
+   - Why: This bypasses React's optimizations and can lead to inconsistencies.
+   - Solution: Always use React's declarative approach for updating the UI.
+
+</Callout>
+
+## Related Concepts
+
+1. **React Reconciliation**: Understanding how React updates the DOM efficiently.
+2. **Virtual DOM**: The concept underlying React's performance optimizations.
+3. **Code Splitting**: Technique for improving initial load time by splitting code into smaller chunks.
+4. **Server-Side Rendering (SSR)**: Can improve perceived performance for initial page loads.
+5. **Web Workers**: Can be used to offload heavy computations from the main thread.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Optimizing Performance](https://react.dev/learn/render-and-commit): Official React documentation on performance optimization.
+
+2. [useMemo](https://react.dev/reference/react/useMemo): React documentation on the useMemo hook.
+
+3. [useCallback](https://react.dev/reference/react/useCallback): React documentation on the useCallback hook.
+
+4. [memo](https://react.dev/reference/react/memo): React documentation on the memo higher-order component.
+
+</Callout>

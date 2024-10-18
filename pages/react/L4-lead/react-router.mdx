@@ -1,0 +1,334 @@
+import { Callout } from "nextra/components";
+
+# React Router
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  React Router is a standard routing library for React applications. It enables
+  navigation among views in a React application, allows changing the browser
+  URL, and keeps the UI in sync with the URL.
+</Callout>
+
+## Detailed Explanation
+
+### Setting up Routes
+
+Setting up routes in React Router involves defining which component should be rendered for each URL path. This is typically done using the `<Route>` component.
+
+Basic route setup:
+
+```jsx
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path='/'
+          element={<Home />}
+        />
+        <Route
+          path='/about'
+          element={<About />}
+        />
+        <Route
+          path='/contact'
+          element={<Contact />}
+        />
+      </Routes>
+    </Router>
+  );
+}
+```
+
+### Navigation
+
+React Router provides several ways to handle navigation:
+
+1. **Link Component**: For declarative navigation.
+2. **useNavigate Hook**: For programmatic navigation.
+3. **NavLink Component**: Similar to Link, but with active state styling.
+
+Example of navigation:
+
+```jsx
+import { Link, useNavigate } from "react-router-dom";
+
+function Navigation() {
+  const navigate = useNavigate();
+
+  return (
+    <nav>
+      <Link to='/'>Home</Link>
+      <Link to='/about'>About</Link>
+      <button onClick={() => navigate("/contact")}>Contact</button>
+    </nav>
+  );
+}
+```
+
+### Route Parameters
+
+Route parameters allow you to pass data through the URL. They are defined in the route path and can be accessed using the `useParams` hook.
+
+Example of route parameters:
+
+```jsx
+import { useParams } from "react-router-dom";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path='/user/:id'
+          element={<UserProfile />}
+        />
+      </Routes>
+    </Router>
+  );
+}
+
+function UserProfile() {
+  const { id } = useParams();
+  return <div>User Profile for user {id}</div>;
+}
+```
+
+## Code Examples
+
+### Basic Routing Setup
+
+```jsx
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+
+function Home() {
+  return <h2>Home</h2>;
+}
+
+function About() {
+  return <h2>About</h2>;
+}
+
+function App() {
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to='/'>Home</Link>
+            </li>
+            <li>
+              <Link to='/about'>About</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route
+            path='/about'
+            element={<About />}
+          />
+          <Route
+            path='/'
+            element={<Home />}
+          />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+```
+
+### Nested Routes
+
+```jsx
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  Outlet
+} from "react-router-dom";
+
+function App() {
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to='/'>Home</Link>
+            </li>
+            <li>
+              <Link to='/users'>Users</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route
+            path='/'
+            element={<Home />}
+          />
+          <Route
+            path='users'
+            element={<Users />}
+          >
+            <Route
+              path=':id'
+              element={<UserProfile />}
+            />
+            <Route
+              path='new'
+              element={<NewUser />}
+            />
+          </Route>
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+function Users() {
+  return (
+    <div>
+      <h2>Users</h2>
+      <nav>
+        <Link to='new'>New User</Link>
+      </nav>
+      <Outlet />
+    </div>
+  );
+}
+
+function UserProfile() {
+  const { id } = useParams();
+  return <h3>User Profile: {id}</h3>;
+}
+
+function NewUser() {
+  return <h3>New User Form</h3>;
+}
+
+function Home() {
+  return <h2>Home</h2>;
+}
+
+export default App;
+```
+
+### Programmatic Navigation
+
+```jsx
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+function LoginForm() {
+  const navigate = useNavigate();
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    // Perform login logic here
+    // If login is successful:
+    navigate("/dashboard");
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* Form fields */}
+      <button type='submit'>Login</button>
+    </form>
+  );
+}
+```
+
+## Best Practices
+
+1. **Use Semantic URLs**: Create meaningful and descriptive URLs for better user experience and SEO.
+
+2. **Implement Code-Splitting**: Use React's lazy loading with Suspense for route-based code splitting.
+
+3. **Handle 404 Routes**: Always include a catch-all route to handle 404 (Not Found) errors.
+
+4. **Use Exact Path Matching**: For more precise routing, use the `exact` prop on `<Route>` components.
+
+5. **Protect Routes**: Implement authentication checks for protected routes.
+
+6. **Use Route Constants**: Define route paths as constants to avoid typos and ease maintenance.
+
+7. **Optimize for Performance**: Use `<Link>` instead of `<a>` tags for internal navigation to leverage SPA benefits.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Forgetting to Use `<Router>`:
+
+   - Mistake: Using React Router components without wrapping the app in a `<Router>` component.
+   - Why: This will cause runtime errors as the routing context is not available.
+   - Solution: Always wrap your app or the part using routing in a `<Router>` component.
+
+</Callout>
+
+<Callout>
+
+2. Incorrect Order of Routes:
+
+   - Mistake: Placing more specific routes after less specific ones.
+   - Why: React Router matches routes in order, so more specific routes can be overshadowed.
+   - Solution: Place more specific routes before less specific ones.
+
+</Callout>
+
+<Callout>
+
+3. Not Handling 404 Cases:
+
+   - Mistake: Failing to provide a fallback route for unmatched URLs.
+   - Why: This can lead to blank pages or unexpected behavior for invalid URLs.
+   - Solution: Always include a catch-all route at the end of your `<Routes>` component.
+
+</Callout>
+
+<Callout>
+
+4. Overusing URL Parameters:
+   - Mistake: Using URL parameters for data that should be in the state.
+   - Why: This can lead to overly complex URLs and unnecessary re-renders.
+   - Solution: Use URL parameters for essential routing information, and keep other data in component state or global state management.
+
+</Callout>
+
+## Related Concepts
+
+1. **Single Page Applications (SPAs)**: React Router is fundamental in creating SPAs.
+2. **Code Splitting**: Often used with React Router for performance optimization.
+3. **History API**: React Router uses the browser's History API under the hood.
+4. **State Management**: Often used alongside routing for managing application state.
+5. **Server-Side Rendering (SSR)**: React Router can be used in SSR scenarios with some additional configuration.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [React Router Documentation](https://reactrouter.com/): Official documentation for React Router.
+
+2. [React Router Tutorial](https://reactrouter.com/docs/en/v6/getting-started/tutorial): A step-by-step tutorial from the official docs.
+
+3. [React Router v6 Overview](https://blog.logrocket.com/react-router-v6/): A comprehensive guide to the features of React Router v6.
+
+4. [Advanced React Router Techniques](https://ui.dev/react-router-tutorial): In-depth tutorial covering advanced routing concepts.
+
+5. [Server Rendering with React Router](https://reactrouter.com/docs/en/v6/guides/ssr): Guide on implementing server-side rendering with React Router.
+
+6. [React Router Testing](https://testing-library.com/docs/example-react-router/): Guide on testing React components that use React Router.
+
+</Callout>

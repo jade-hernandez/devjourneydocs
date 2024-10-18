@@ -1,30 +1,22 @@
-import CodeBlock from "../../components/CodeBlock";
+import { Callout } from "nextra/components";
 
 # Introduction to React
 
-## Importance Level: 🟢 (Must have)
-
-React is classified as a "Must have" concept in modern web development. This classification is due to its widespread adoption in the industry, its powerful capabilities in building dynamic user interfaces, and its continued relevance in the evolving landscape of web technologies. Understanding React is crucial for developers aiming to work on modern web applications.
-
-## Engineering Level: L1-L3
-
-This introductory concept is most relevant for L1 (Junior Engineer) to L3 (Senior Engineer) levels.
-
-- L1: Essential for building a foundation in modern web development.
-- L2: Important for deepening understanding and applying React in more complex scenarios.
-- L3: Necessary for architectural decisions and mentoring junior developers.
-
-While L4 (Staff Engineer) and L5 (Principal Engineer) should be familiar with React, they typically focus more on system-wide architecture and technology strategy.
-
 ## Brief Overview
 
-React is a JavaScript library for building user interfaces, particularly for single-page applications. It allows developers to create reusable UI components that manage their own state, resulting in complex UIs from small, isolated pieces of code.
+<Callout emoji='💡'>
+  React is a JavaScript library for building user interfaces, particularly for
+  single-page applications. It allows developers to create reusable UI
+  components that manage their own state, resulting in complex UIs from small,
+  isolated pieces of code.
+</Callout>
 
 ## Detailed Explanation
 
 ### What is React and How Does it Work?
 
 React is an open-source JavaScript library developed by Facebook for building user interfaces. It works by allowing developers to create reusable UI components that efficiently update and render when data changes. React uses a virtual DOM (Document Object Model) to improve performance by minimizing direct manipulation of the browser's DOM.
+React was designed to solve the problem of building large applications with data that changes over time. It aimed to be simple, declarative, and composable.
 
 ### Why Was React Introduced?
 
@@ -36,7 +28,12 @@ React was introduced to solve several problems in web development:
 
 ### React vs. Vanilla JavaScript and HTML
 
-Unlike vanilla JavaScript and HTML, where developers often directly manipulate the DOM, React provides a declarative approach. You describe how your UI should look based on the current application state, and React efficiently updates and renders the right components when the data changes.
+<Callout emoji='🔍'>
+  Unlike vanilla JavaScript and HTML, where developers often directly manipulate
+  the DOM, React provides a declarative approach. You describe how your UI
+  should look based on the current application state, and React efficiently
+  updates and renders the right components when the data changes.
+</Callout>
 
 ### Advantages of React
 
@@ -48,17 +45,13 @@ Unlike vanilla JavaScript and HTML, where developers often directly manipulate t
 
 ### Virtual DOM
 
-The Virtual DOM is a lightweight copy of the actual DOM. When state changes occur, React first updates this virtual DOM, compares it with the previous version (a process called "diffing"), and then efficiently updates only the necessary parts of the actual DOM. This process significantly improves performance, especially in applications with frequent updates.
-
-### React's Core Philosophy
-
-React was created by Facebook in 2011 for their own use and open-sourced in 2013. Its core philosophy includes:
-
-1. Declarative: Describe the desired state of your UI, and React will efficiently update and render the right components.
-2. Component-Based: Build encapsulated components that manage their own state, then compose them to make complex UIs.
-3. Learn Once, Write Anywhere: Whether you're developing new features for your website or a mobile app with React Native, the core principles remain the same.
-
-React was designed to solve the problem of building large applications with data that changes over time. It aimed to be simple, declarative, and composable.
+<Callout emoji='🚀'>
+  The Virtual DOM is a lightweight copy of the actual DOM. When state changes
+  occur, React first updates this virtual DOM, compares it with the previous
+  version (a process called "diffing"), and then efficiently updates only the
+  necessary parts of the actual DOM. This process significantly improves
+  performance, especially in applications with frequent updates.
+</Callout>
 
 ### Evolution of React
 
@@ -73,7 +66,7 @@ Since its introduction, React has evolved significantly:
 
 ### 1. "Hello, World!" in React
 
-```jsx
+```js copy showLineNumbers
 import React from "react";
 import ReactDOM from "react-dom";
 
@@ -83,20 +76,6 @@ function HelloWorld() {
 
 ReactDOM.render(<HelloWorld />, document.getElementById("root"));
 ```
-
-<CodeBlock className='language-jsx'>
-{`
-import React from "react";
-import ReactDOM from "react-dom";
-
-function HelloWorld() {
-return <h1>Hello, World!</h1>;
-}
-
-ReactDOM.render(<HelloWorld />, document.getElementById("root"));
-`}
-
-</CodeBlock>
 
 This example demonstrates the basic structure of a React component and how it's rendered to the DOM.
 
@@ -130,7 +109,11 @@ function App() {
 export default App;
 ```
 
-This example showcases how React's component-based architecture allows for modular, reusable UI elements.
+<Callout emoji='🧩'>
+  This example showcases how React's component-based architecture allows for
+  modular, reusable UI elements. Each part of the UI is encapsulated in its own
+  component, making the code more maintainable and easier to understand.
+</Callout>
 
 ### 3. React vs. Vanilla JavaScript
 
@@ -170,52 +153,85 @@ buttonElement.addEventListener("click", () => {
 updateCounter();
 ```
 
-The React version is more declarative and encapsulates state management within the component, leading to more maintainable code.
+<Callout emoji='⚖️'>
+  The React version is more declarative and encapsulates state management within
+  the component, leading to more maintainable code. It demonstrates how React
+  simplifies UI updates by automatically re-rendering when the state changes.
+</Callout>
 
 ## Best Practices
 
-1. Use Functional Components and Hooks: They're simpler, more readable, and easier to test.
-2. Keep Components Small and Focused: This improves reusability and makes debugging easier.
-3. Use PropTypes for Type Checking: This helps catch bugs early by validating props.
-4. Lift State Up When Necessary: If multiple components need the same state, move it to their closest common ancestor.
-5. Use Keys in Lists: Always use keys when rendering lists of elements to help React identify which items have changed.
+1. **Use Functional Components and Hooks**: They're simpler, more readable, and
+   easier to test.
+2. **Keep Components Small and Focused**: This improves
+   reusability and makes debugging easier.
+3. **Lift State Up When Necessary**: If multiple components need the same state, move it to their
+   closest common ancestor.
+4. **Use Keys in Lists**: Always use keys when rendering
+   lists of elements to help React identify which items have changed.
 
 ## Common Pitfalls
 
-1. Modifying State Directly:
+<Callout>
+
+1. **Modifying State Directly**:
 
    - Mistake: Changing state without using setState or the state updater function.
    - Why: React may not re-render the component, leading to unexpected behavior.
    - Solution: Always use setState or the state updater function provided by useState.
 
-2. Overusing State:
+</Callout>
+
+<Callout>
+
+2. **Overusing State**:
 
    - Mistake: Storing everything in state, including data that can be computed from props or other state.
    - Why: This can lead to inconsistencies and make the component harder to maintain.
    - Solution: Derive values from props or state when possible, use useMemo for expensive computations.
 
-3. Not Understanding React's Lifecycle:
+</Callout>
+
+<Callout>
+
+3. **Not Understanding React's Lifecycle**:
 
    - Mistake: Misusing useEffect or not cleaning up side effects.
    - Why: Can lead to memory leaks or unexpected behavior.
    - Solution: Understand and properly use useEffect, including the cleanup function when necessary.
 
-4. Prop Drilling:
+</Callout>
+
+<Callout>
+
+4. **Prop Drilling**:
+
    - Mistake: Passing props through multiple levels of components that don't need them.
    - Why: Makes code harder to maintain and understand.
    - Solution: Use Context API for global state or consider state management libraries for complex applications.
 
+</Callout>
+
 ## Related Concepts
 
-1. JSX: A syntax extension for JavaScript that looks similar to XML/HTML and is used to describe what the UI should look like.
-2. State Management: Beyond React's built-in state, libraries like Redux or MobX are often used for managing complex application state.
-3. React Router: A standard routing library for React, used to handle navigation in single-page applications.
-4. React Hooks: Functions that let you use state and other React features in functional components.
+1. **JSX**: A syntax extension for JavaScript that looks similar to XML/HTML and is used to describe what the UI should look like.
+2. **State Managemen**t: Beyond React's built-in state, libraries like Redux or MobX are often used for managing complex application state.
+3. **React Router**: A standard routing library for React, used to handle navigation in single-page applications.
+4. **React Hooks**: Functions that let you use state and other React features in functional components.
 
 ## Further Resources
 
-1. [React Official Documentation](https://reactjs.org/docs/getting-started.html): Comprehensive guide to all React concepts and APIs.
-2. [React Tutorial](https://reactjs.org/tutorial/tutorial.html): Official hands-on tutorial for building a game with React.
-3. [Egghead.io's Beginner's Guide to React](https://egghead.io/courses/the-beginner-s-guide-to-react): Free video course covering React basics.
-4. [React for Beginners by Wes Bos](https://reactforbeginners.com/): Paid course offering in-depth React training with real-world projects.
-5. [Overreacted](https://overreacted.io/): Blog by Dan Abramov, a core React team member, offering deep dives into React concepts.
+<Callout emoji='📚'>
+
+1. [React Official Documentation](https://react.dev/learn): Comprehensive
+   guide to all React concepts and APIs.
+
+2. [Egghead.io's Beginner's Guide to
+   React](https://egghead.io/courses/the-beginner-s-guide-to-react): Free video
+   course covering React basics.
+
+3. [Overreacted](https://overreacted.io/): Blog
+   by Dan Abramov, a core React team member, offering deep dives into React
+   concepts.
+
+</Callout>

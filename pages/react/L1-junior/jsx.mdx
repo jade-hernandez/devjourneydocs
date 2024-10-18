@@ -1,0 +1,259 @@
+import { Callout } from "nextra/components";
+
+# JSX in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  JSX is a syntax extension for JavaScript that looks similar to XML or HTML. It
+  allows you to write HTML-like code in your JavaScript files, making it easier
+  to describe the structure of UI components in React applications.
+</Callout>
+
+## Detailed Explanation
+
+### What is JSX and How Does it Work in React?
+
+JSX (JavaScript XML) is a syntax extension for JavaScript recommended by React. It allows you to write HTML-like code directly in your JavaScript files. When a file containing JSX is compiled, the JSX is transformed into regular JavaScript function calls.
+
+### Why Was JSX Introduced?
+
+JSX was introduced to solve several problems in React development:
+
+1. Improve readability and writeability of React components
+2. Provide a familiar syntax for defining component structure (similar to HTML)
+3. Enable static analysis and type checking with tools like ESLint
+
+### JSX vs. Vanilla HTML and JavaScript
+
+<Callout emoji='🔍'>
+  Unlike vanilla HTML, JSX is not valid JavaScript on its own. It needs to be
+  transpiled into JavaScript before it can be run in a browser. JSX provides a
+  more declarative and intuitive way to describe UI components.
+</Callout>
+
+### Key Features of JSX
+
+1. XML-like syntax
+2. Ability to embed JavaScript expressions
+3. Represents objects (React elements)
+4. Supports attributes (similar to HTML)
+5. Can contain child elements
+
+### JSX Transformation
+
+JSX is transformed into regular JavaScript by tools like Babel. For example:
+
+```jsx
+const element = <h1>Hello, world!</h1>;
+```
+
+is transformed into:
+
+```javascript
+const element = React.createElement("h1", null, "Hello, world!");
+```
+
+<Callout emoji='🔧'>
+  Understanding this transformation is crucial for debugging and optimizing your
+  React applications. It helps you grasp what's happening under the hood when
+  you write JSX.
+</Callout>
+
+### Syntax and Usage of JSX
+
+#### Basic Syntax Rules
+
+- JSX tags can contain children
+- JSX must return a single root element (or use fragments)
+- JSX uses camelCase property naming instead of HTML attribute names
+
+#### Embedding Expressions in JSX
+
+You can embed any JavaScript expression in JSX by wrapping it in curly braces:
+
+```jsx
+const name = "John";
+const element = <h1>Hello, {name}</h1>;
+```
+
+#### JSX Attributes
+
+JSX uses camelCase for attribute names and can take string literals or JavaScript expressions as values:
+
+```jsx
+const element = (
+  <div
+    className='container'
+    style={{ backgroundColor: "blue" }}
+  >
+    Content
+  </div>
+);
+```
+
+### Limitations and Gotchas
+
+<Callout emoji='⚠️'>
+  - JSX is not HTML and has some syntax differences (e.g., `className` instead
+  of `class`) - JSX expressions must be wrapped in parentheses when spanning
+  multiple lines - All tags must be closed (including self-closing tags like `
+  <img />` )
+</Callout>
+
+## Code Examples
+
+### 1. Basic JSX Syntax
+
+```jsx
+function Greeting() {
+  return <h1>Hello, World!</h1>;
+}
+```
+
+This simple example shows the basic syntax of JSX, demonstrating how HTML-like code can be written directly in a JavaScript function.
+
+### 2. Embedding Expressions in JSX
+
+```jsx
+function Greeting(props) {
+  const name = props.name;
+  return <h1>Hello, {name}!</h1>;
+}
+```
+
+This example shows how to embed JavaScript expressions (in this case, a variable) within JSX using curly braces.
+
+### 3. Complex JSX with Nested Elements and Attributes
+
+```jsx
+function UserProfile(props) {
+  return (
+    <div className='user-profile'>
+      <img
+        src={props.avatarUrl}
+        alt={props.name}
+        className='avatar'
+      />
+      <h2>{props.name}</h2>
+      <p>Age: {props.age}</p>
+      <ul>
+        {props.hobbies.map((hobby, index) => (
+          <li key={index}>{hobby}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+This more complex example demonstrates nested elements, attribute usage, and embedding of expressions including a map function to generate a list.
+
+### 4. JSX vs. Vanilla JavaScript
+
+JSX:
+
+```jsx
+const element = (
+  <div className='greeting'>
+    <h1>Hello, World!</h1>
+    <p>Welcome to React</p>
+  </div>
+);
+```
+
+Equivalent vanilla JavaScript:
+
+```javascript
+const element = React.createElement(
+  "div",
+  { className: "greeting" },
+  React.createElement("h1", null, "Hello, World!"),
+  React.createElement("p", null, "Welcome to React")
+);
+```
+
+<Callout emoji='💡'>
+  This comparison highlights how JSX simplifies the creation of React elements
+  compared to using `React.createElement()` directly, making your code more
+  readable and maintainable.
+</Callout>
+
+## Best Practices
+
+1. **Use Parentheses for Multiline JSX**: Improves readability and prevents issues with automatic semicolon insertion.
+2. **Use Fragments to Return Multiple Elements**: Avoids unnecessary DOM nesting.
+3. **Use Semantic HTML Elements in JSX**: Improves accessibility and SEO.
+4. **Always Close Tags**: Even for elements that are self-closing in HTML.
+5. **Use camelCase for Attribute Names**: Follows JavaScript convention and avoids conflicts with reserved words.
+
+<Callout emoji='🌟'>
+  Following these best practices will not only make your JSX code more readable
+  and maintainable but also help prevent common errors and improve your
+  application's performance and accessibility.
+</Callout>
+
+## Common Pitfalls
+
+<Callout>
+
+1. Forgetting to Import React:
+
+   - Mistake: Not importing React when using JSX.
+   - Why: JSX is transformed into `React.createElement()` calls, requiring React to be in scope.
+   - Solution: Always import React in files using JSX (not necessary in newer versions of React).
+
+</Callout>
+
+<Callout>
+
+2. Using `class` Instead of `className`:
+
+   - Mistake: Using the HTML `class` attribute in JSX.
+   - Why: `class` is a reserved word in JavaScript.
+   - Solution: Use `className` for CSS classes in JSX.
+
+</Callout>
+
+<Callout>
+
+3. Incorrect Closing of Self-Closing Tags:
+
+   - Mistake: Not properly closing tags like `<img>` or `<input>`.
+   - Why: JSX requires all tags to be explicitly closed.
+   - Solution: Use self-closing syntax: `<img />` or `<input />`.
+
+</Callout>
+
+<Callout>
+
+4. Rendering Objects Directly:
+   - Mistake: Trying to render JavaScript objects directly in JSX.
+   - Why: JSX can only render primitive values (strings, numbers) directly.
+   - Solution: Convert objects to strings or use object properties individually.
+
+</Callout>
+
+## Related Concepts
+
+1. **React Elements**: JSX is used to create React elements, which are the building blocks of React applications.
+2. **Babel**: The tool commonly used to transform JSX into standard JavaScript.
+3. **Virtual DOM**: JSX is used to describe the structure of the Virtual DOM in React.
+4. **React Components**: JSX is extensively used within React components to define their structure and content.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Writing Markup with JSX](https://react.dev/learn/writing-markup-with-jsx):
+   Official introduction to JSX in React.
+
+2. [JavaScript in JSX with Curly
+   Braces](https://react.dev/learn/javascript-in-jsx-with-curly-braces): Learn
+   how to use JavaScript expressions in JSX.
+
+3. [Babel's JSX
+   Documentation](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx):
+   Detailed explanation of how Babel transforms JSX.
+
+</Callout>

@@ -1,0 +1,197 @@
+import { Callout } from "nextra/components";
+
+# Portals in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  Portals in React provide a way to render children into a DOM node that exists
+  outside the DOM hierarchy of the parent component. This allows for more
+  flexible rendering of components, especially useful for modals, tooltips, and
+  other overlay-style UI elements.
+</Callout>
+
+## Detailed Explanation
+
+### What are Portals? Why do we need them?
+
+Portals are a feature in React that allows you to render a component's children into a different part of the DOM tree, outside of the component's own hierarchy.
+
+**We need Portals for several reasons**:
+
+1. **Breaking Out of Container**: Sometimes, a component needs to visually "break out" of its container. For example, modals, tooltips, or floating menus.
+
+2. **Avoiding CSS Limitations**: Portals can help overcome CSS limitations related to stacking contexts and z-index.
+
+3. **Rendering to Different Parts of the DOM**: In some cases, you might need to render content to a specific part of the DOM for semantic or accessibility reasons.
+
+4. **Avoiding Conflicts**: Portals can help avoid conflicts with parent component's CSS or layout.
+
+### Rendering children into different DOM subtrees
+
+Portals allow you to render children into a different DOM subtree while maintaining the React component hierarchy. This means:
+
+1. The portal component still exists in the React component tree, maintaining context and event bubbling.
+2. The rendered output appears in a different place in the actual DOM.
+
+The syntax for creating a portal is:
+
+```jsx
+ReactDOM.createPortal(child, container);
+```
+
+Where `child` is any renderable React child, and `container` is a DOM element.
+
+## Code Examples
+
+### Basic Portal Example
+
+Here's a simple example of a modal using a Portal:
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+
+function Modal({ children, onClose }) {
+  return ReactDOM.createPortal(
+    <div className='modal-overlay'>
+      <div className='modal-content'>
+        {children}
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+function App() {
+  const [showModal, setShowModal] = React.useState(false);
+
+  return (
+    <div>
+      <h1>My App</h1>
+      <button onClick={() => setShowModal(true)}>Show Modal</button>
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)}>
+          <h2>This is a modal</h2>
+          <p>It's rendered outside the App component's DOM tree.</p>
+        </Modal>
+      )}
+    </div>
+  );
+}
+```
+
+### Portal with Event Bubbling
+
+This example demonstrates how events from portals bubble up through the React tree:
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+
+function Child() {
+  return (
+    <div className='modal'>
+      <button>Click</button>
+    </div>
+  );
+}
+
+function Parent() {
+  const [clicks, setClicks] = React.useState(0);
+  const handleClick = () => setClicks(c => c + 1);
+
+  return (
+    <div onClick={handleClick}>
+      <p>Number of clicks: {clicks}</p>
+      {ReactDOM.createPortal(<Child />, document.body)}
+    </div>
+  );
+}
+```
+
+In this example, clicking the button inside the portal will increment the click count in the parent component, demonstrating that event bubbling works through portals.
+
+## Best Practices
+
+1. **Use Portals Sparingly**: Only use portals when necessary, such as for modals, tooltips, or floating menus.
+
+2. **Keep Accessibility in Mind**: Ensure that content rendered through portals is still accessible, especially for screen readers.
+
+3. **Manage Focus**: When using portals for modals or dialogs, manage focus correctly for keyboard navigation.
+
+4. **Clean Up**: Always clean up and unmount portals when they're no longer needed to prevent memory leaks.
+
+5. **Consider Server-Side Rendering**: Be aware that portals may require special handling in server-side rendering scenarios.
+
+6. **Maintain React's Unidirectional Data Flow**: Even though the DOM structure changes, maintain React's principles of unidirectional data flow.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Overusing Portals:
+
+   - Mistake: Using portals for layout purposes when CSS could solve the problem.
+   - Why: This can complicate your component structure unnecessarily.
+   - Solution: Only use portals when you need to break out of the DOM hierarchy for a specific reason.
+
+</Callout>
+
+<Callout>
+
+2. Forgetting About Event Bubbling:
+
+   - Mistake: Assuming events in portals are isolated from the rest of the app.
+   - Why: Events from portals still bubble up through the React component tree.
+   - Solution: Be aware of event bubbling and handle events appropriately.
+
+</Callout>
+
+<Callout>
+
+3. Not Cleaning Up Portals:
+
+   - Mistake: Failing to unmount or clean up portals when they're no longer needed.
+   - Why: This can lead to memory leaks or unexpected behavior.
+   - Solution: Always ensure portals are properly unmounted and cleaned up.
+
+</Callout>
+
+<Callout>
+
+4. Ignoring Accessibility:
+   - Mistake: Not considering accessibility when using portals.
+   - Why: Content in portals can be difficult for screen readers to navigate.
+   - Solution: Ensure proper ARIA attributes and focus management for portal content.
+
+</Callout>
+
+## Related Concepts
+
+1. **React.createRef**: Often used to get references to DOM nodes for portal targets.
+2. **useEffect Hook**: Useful for managing the lifecycle of portals in functional components.
+3. **Event Bubbling**: Understanding how events bubble through portals is crucial.
+4. **React Context**: Context still works as expected through portals.
+5. **CSS Stacking Contexts**: Portals can help manage complex stacking contexts.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Portals](https://react.dev/reference/react-dom/createPortal): Official React documentation on Portals.
+
+2. [Rendering to the DOM](https://react.dev/reference/react-dom/render): React documentation on rendering, which includes information about createPortal.
+
+3. [Creating and Using Portals](https://react.dev/learn/using-portals): A guide on using portals in React applications.
+
+4. [Portals in React](https://blog.logrocket.com/learn-react-portals-by-example/): A comprehensive guide to understanding and using portals in React.
+
+5. [Modal Dialogs in React](https://reactjs.org/docs/portals.html#usage): Official React documentation example of using portals for modal dialogs.
+
+6. [Accessibility in React](https://reactjs.org/docs/accessibility.html): React's accessibility guide, which is relevant when working with portals.
+
+7. [Managing Focus in Portals](https://www.w3.org/TR/wai-aria-practices/#dialog_modal): W3C guidelines on managing focus in modal dialogs, which often use portals.
+
+</Callout>

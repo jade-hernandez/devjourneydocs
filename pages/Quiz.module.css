@@ -1,0 +1,162 @@
+.buttonContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.codingChallenge {
+  margin-bottom: 20px;
+}
+
+.codingChallenge :global(.react-live-editor) {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.correct {
+  color: #28a745;
+}
+
+.feedbackContainer {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feedback {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  animation: fadeIn 0.5s;
+}
+
+.incorrect {
+  color: #dc3545;
+}
+
+.optionsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.optionButton {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.optionButton:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.optionButton.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.quizContainer {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.question {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.runCodeBtn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.runCodeBtn:hover {
+  background-color: #0056b3;
+}
+
+.solution {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.solution pre {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.solutionContainer {
+  margin-top: 20px;
+}
+
+.solution-container h4 {
+  margin-bottom: 10px;
+}
+
+.solutionContainer :global(.react-live-editor) {
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.toggleSolutionBtn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggleSolutionBtn:hover {
+  background-color: #45a049;
+}
+
+.hideSolutionBtn {
+  background-color: #6c757d;
+}
+
+.hideSolutionBtn:hover {
+  background-color: #5a6268;
+}
+
+.tryAgainButton {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tryAgainButton:hover {
+  background-color: #5a6268;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

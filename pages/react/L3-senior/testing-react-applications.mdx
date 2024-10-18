@@ -1,0 +1,241 @@
+import { Callout } from "nextra/components";
+
+# Testing React Applications
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  Testing React applications involves writing and running automated tests to
+  verify that your application behaves as expected. This includes unit tests for
+  individual components, integration tests for component interactions, and
+  end-to-end tests for complete user flows.
+</Callout>
+
+## Detailed Explanation
+
+### Why do we need to test our applications?
+
+Testing is a crucial part of software development for several reasons:
+
+1. **Catch Bugs Early**: Tests help identify issues before they reach production, saving time and resources.
+2. **Improve Code Quality**: Writing tests often leads to better-designed, more modular code.
+3. **Facilitate Refactoring**: Tests provide confidence when making changes to existing code.
+4. **Document Code Behavior**: Tests serve as executable documentation of how your code should behave.
+5. **Enable Continuous Integration/Continuous Deployment (CI/CD)**: Automated tests are essential for implementing robust CI/CD pipelines.
+6. **Enhance Developer Confidence**: A good test suite gives developers confidence in their code and reduces stress during deployments.
+
+### Jest
+
+Jest is a popular JavaScript testing framework that works well with React applications. It's often the default choice for testing React apps due to its simplicity and powerful features.
+
+Key features of Jest:
+
+- **Zero Config**: Works out of the box for most JavaScript projects.
+- **Snapshot Testing**: Allows you to easily capture and verify the structure of your components.
+- **Mocking**: Provides powerful mocking capabilities for functions and modules.
+- **Fast and Parallel**: Runs tests in parallel, making the test suite faster.
+
+Example of a simple Jest test:
+
+```javascript
+import { sum } from "./math";
+
+test("adds 1 + 2 to equal 3", () => {
+  expect(sum(1, 2)).toBe(3);
+});
+```
+
+### React Testing Library
+
+React Testing Library is a set of helpers that let you test React components without relying on their implementation details. It encourages better testing practices by focusing on testing your application as users would use it.
+
+Key principles of React Testing Library:
+
+- **Querying Elements**: Provides queries to find elements by their label text, role, or test ID.
+- **User-centric**: Encourages testing from the user's perspective.
+- **Accessibility**: Promotes writing accessible applications by querying the DOM in ways that users would.
+
+Example of a React Testing Library test:
+
+```jsx
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import Counter from "./Counter";
+
+test("increments counter", () => {
+  render(<Counter />);
+  const button = screen.getByText("Increment");
+  userEvent.click(button);
+  expect(screen.getByText("Count: 1")).toBeInTheDocument();
+});
+```
+
+### Component Testing Strategies
+
+When testing React components, consider the following strategies:
+
+1. **Unit Testing**: Test individual components in isolation.
+
+   - Focus on the component's props, state, and rendered output.
+   - Use shallow rendering to limit the test scope.
+
+2. **Integration Testing**: Test how components work together.
+
+   - Render parent components with their children.
+   - Test interactions between components.
+
+3. **Snapshot Testing**: Capture a component's rendered output and compare it to a stored snapshot.
+
+   - Useful for detecting unintended changes in UI.
+   - Be cautious of overuse, as it can lead to brittle tests.
+
+4. **Behavior Testing**: Focus on testing the component's behavior rather than its implementation.
+
+   - Use React Testing Library to interact with components as a user would.
+   - Test user flows and interactions.
+
+5. **Mocking**: Use mocks for external dependencies, API calls, or complex logic.
+
+   - Helps isolate the component being tested.
+   - Useful for testing error states or loading behaviors.
+
+6. **Coverage Testing**: Measure how much of your code is covered by tests.
+   - Aim for high coverage, but don't treat it as the only metric of test quality.
+
+## Code Examples
+
+### Jest Example: Testing a Utility Function
+
+```javascript
+// math.js
+export function sum(a, b) {
+  return a + b;
+}
+
+// math.test.js
+import { sum } from "./math";
+
+describe("sum function", () => {
+  it("adds two numbers correctly", () => {
+    expect(sum(1, 2)).toBe(3);
+    expect(sum(-1, 1)).toBe(0);
+    expect(sum(5, 5)).toBe(10);
+  });
+
+  it("handles floating point numbers", () => {
+    expect(sum(0.1, 0.2)).toBeCloseTo(0.3);
+  });
+});
+```
+
+### React Testing Library Example: Testing a Counter Component
+
+```jsx
+// Counter.js
+import React, { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+
+// Counter.test.js
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import Counter from "./Counter";
+
+describe("Counter component", () => {
+  it("renders initial count", () => {
+    render(<Counter />);
+    expect(screen.getByText("Count: 0")).toBeInTheDocument();
+  });
+
+  it("increments count when button is clicked", () => {
+    render(<Counter />);
+    const button = screen.getByText("Increment");
+    userEvent.click(button);
+    expect(screen.getByText("Count: 1")).toBeInTheDocument();
+  });
+});
+```
+
+## Best Practices
+
+1. **Write Tests First (TDD)**: Consider writing tests before implementing features to ensure better test coverage and design.
+2. **Keep Tests Simple**: Each test should ideally check one specific behavior.
+3. **Use Descriptive Test Names**: Test names should clearly describe what is being tested and the expected outcome.
+4. **Avoid Testing Implementation Details**: Focus on testing behavior and outputs rather than internal workings.
+5. **Maintain Test Independence**: Each test should be able to run independently of others.
+6. **Use Continuous Integration**: Run your tests automatically on every code change.
+7. **Keep Tests Fast**: Slow tests discourage frequent running. Optimize for speed where possible.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Over-reliance on Snapshot Tests:
+
+   - Mistake: Using snapshot tests for everything.
+   - Why: Snapshots can be brittle and don't necessarily test behavior.
+   - Solution: Use snapshots judiciously, primarily for stable components.
+
+</Callout>
+
+<Callout>
+
+2. Testing Implementation Details:
+
+   - Mistake: Writing tests that are tightly coupled to component internals.
+   - Why: This makes tests brittle and can hinder refactoring.
+   - Solution: Focus on testing component behavior and output.
+
+</Callout>
+
+<Callout>
+
+3. Insufficient Test Coverage:
+
+   - Mistake: Only testing the happy path.
+   - Why: This leaves edge cases and error scenarios untested.
+   - Solution: Test various scenarios, including error states and edge cases.
+
+</Callout>
+
+<Callout>
+
+4. Ignoring Accessibility in Tests:
+   - Mistake: Not considering accessibility when writing tests.
+   - Why: This can lead to inaccessible applications.
+   - Solution: Use queries that encourage accessible markup, like `getByRole`.
+
+</Callout>
+
+## Related Concepts
+
+1. **Continuous Integration/Continuous Deployment (CI/CD)**: Automated testing is a key component of CI/CD pipelines.
+2. **Test-Driven Development (TDD)**: A development process relying on a short development cycle where tests are written before the code.
+3. **Mocking**: Creating fake versions of external services or modules to isolate the code being tested.
+4. **Code Coverage**: A measure of how much of your code is executed during your tests.
+5. **End-to-End Testing**: Testing the entire application flow, often using tools like Cypress or Selenium.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Jest Documentation](https://jestjs.io/docs/getting-started): Comprehensive guide to using Jest for JavaScript testing.
+
+2. [Testing React Apps](https://jestjs.io/docs/tutorial-react): Jest's tutorial on testing React applications.
+
+3. [React Testing Library Documentation](https://testing-library.com/docs/react-testing-library/intro/): Official documentation for React Testing Library.
+
+4. [Common Mistakes with React Testing Library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library): An article by Kent C. Dodds on avoiding common pitfalls when using React Testing Library.
+
+5. [Static vs Unit vs Integration vs E2E Testing](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests): An article explaining different types of tests and when to use each.
+
+</Callout>

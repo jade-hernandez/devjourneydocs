@@ -1,0 +1,182 @@
+import { Callout } from "nextra/components";
+import { Quiz } from "../../../components/Quiz";
+import { ProgressTracker } from "../../../components/ProgressTracker";
+import { CodingChallenge } from "../../../components/CodingChallenge";
+
+# React Hooks and Custom Hooks - Exercises
+
+<ProgressTracker
+  section={1}
+  completedTasks={4}
+  totalTasks={5}
+/>
+
+<Callout emoji='📚'>
+  Before attempting these exercises, make sure you've read through the [React
+  Hooks and Custom
+  Hooks](http://localhost:3000/react/L1-junior/react-hooks-and-custom-hooks)
+  documentation.
+</Callout>
+
+## Quiz
+
+Test your understanding of React Hooks:
+
+<Quiz
+  question='What is the primary purpose of the useState hook?'
+  options={[
+    "Manage side effects",
+    "Handle state in functional components",
+    "Create custom hooks",
+    "Optimize performance"
+  ]}
+  correctAnswer='Handle state in functional components'
+/>
+
+<Quiz
+  question='Which hook is used to perform side effects in a component?'
+  options={["useEffect", "useState", "useContext", "useReducer"]}
+  correctAnswer='useEffect'
+/>
+
+<Quiz
+  question='What is the naming convention for custom hooks?'
+  options={[
+    "They must start with use",
+    "They must end with Hook",
+    "They can have any name",
+    "They must be all uppercase"
+  ]}
+  correctAnswer='They must start with use'
+/>
+
+## Coding Challenges
+
+### 1. Simple useState Hook
+
+Create a `SwapColors` component using the `useState` hook to toggle between two colors when a button "Swap Colors" is clicked.
+
+**Tips:** Colors should be toggled between "red" and "blue". No need to import React. You must use the `useState` hook like this: `React.useState()`.
+
+<CodingChallenge
+  initialCode={`
+    function SwapColors() {
+      let color; // This is to be replaced by the useState code.
+
+      return (
+        <div>
+          {/* Width and Height should be 100 */}
+          <div style={{ width: 0, height: 0, backgroundColor: color }}></div>
+        </div>
+      );
+    }
+
+    // Render the component
+    render(<SwapColors />);
+
+`}
+  solution={`
+function SwapColors() {
+const [color, setColor] = React.useState("red");
+
+      const toggleColors = () => {
+        setColor(color === "red" ? "blue" : "red");
+      };
+
+      return (
+        <div>
+          <div style={{ width: 100, height: 100, backgroundColor: color }}></div>
+          <button onClick={toggleColors}>Swap Colors</button>
+        </div>
+      );
+    }
+
+    // Render the component
+    render(<SwapColors />);
+
+`}
+/>
+
+### 2. Basic useEffect Hook
+
+Create a `Timer` component that uses `useEffect` to update and display the current time every second.
+
+<CodingChallenge
+  initialCode={`
+function Timer() {
+  // Your code here
+}
+
+// Render the component
+render(<Timer />);
+`}
+  solution={`
+function Timer() {
+const [time, setTime] = React.useState(new Date().toLocaleTimeString());
+
+React.useEffect(() => {
+const timer = setInterval(() => {
+setTime(new Date().toLocaleTimeString());
+}, 1000);
+
+    return () => clearInterval(timer);
+
+}, []);
+
+return <div>Current Time: {time}</div>;
+}
+
+// Render the component
+render(<Timer />);
+`}
+/>
+
+### 3. Simple Custom Hook
+
+Create a custom hook called `useToggle` that manages a boolean state and provides a function to toggle it. Then, use this hook in a component.
+
+<CodingChallenge
+  initialCode={`
+// Create your custom hook here
+
+function ToggleComponent() {
+// Use your custom hook here
+}
+
+// Render the component
+render(<ToggleComponent />);
+`}
+  solution={`
+function useToggle(initialValue) {
+const [value, setValue] = React.useState(initialValue);
+
+      const toggle = () => setValue(!value);
+
+      return [value, toggle];
+    }
+
+function ToggleComponent() {
+const [isOn, toggleIsOn] = useToggle(false);
+
+return (
+
+<div>
+  <p>{isOn ? "ON" : "OFF"}</p>
+  <button onClick={toggleIsOn}>Toggle</button>
+</div>
+); }
+
+// Render the component
+render(<ToggleComponent />);
+`}
+/>
+
+## Further Practice
+
+To reinforce your understanding of React Hooks:
+
+1. Create a component that uses multiple state variables with useState.
+2. Build a simple form that uses useState to manage input fields.
+3. Implement a basic counter that uses useEffect to update the document title with the current count.
+
+Remember, practice is key to mastering React Hooks. Start with these simple examples and gradually build more complex applications!

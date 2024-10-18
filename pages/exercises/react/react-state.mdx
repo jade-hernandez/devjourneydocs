@@ -1,0 +1,160 @@
+import { Callout } from "nextra/components";
+import { Quiz } from "../../../components/Quiz";
+import { ProgressTracker } from "../../../components/ProgressTracker";
+import { CodingChallenge } from "../../../components/CodingChallenge";
+
+# React State - Exercises
+
+<ProgressTracker
+  section={1}
+  completedTasks={3}
+  totalTasks={5}
+/>
+
+<Callout emoji='📚'>
+  Before attempting these exercises, make sure you've read through the [React
+  State](http://localhost:3000/react/L1-junior/state) documentation.
+</Callout>
+
+## Quiz
+
+Test your understanding of React State:
+
+<Quiz
+  question='What hook is used to add state to a functional component?'
+  options={["useState", "setState", "createState", "makeState"]}
+  correctAnswer='useState'
+/>
+
+<Quiz
+  question='Which of the following is true about state updates in React?'
+  options={[
+    "State updates are always synchronous",
+    "State updates directly modify the current state",
+    "State updates may be batched for performance reasons",
+    "State can only hold primitive values like strings and numbers"
+  ]}
+  correctAnswer='State updates may be batched for performance reasons'
+/>
+
+<Quiz
+  question='What is the correct way to update state based on the previous state?'
+  options={[
+    "setCount(count + 1)",
+    "setCount(prevCount => prevCount + 1)",
+    "setCount(count++)",
+    "count = count + 1"
+  ]}
+  correctAnswer='setCount(prevCount => prevCount + 1)'
+/>
+
+## Coding Challenges
+
+### 1. Simple Counter
+
+Create a `Counter` component that displays a number and has buttons to increment and decrement the number.
+
+<CodingChallenge
+  initialCode={`
+function Counter() {
+  // Your code here
+}
+
+// Render the component
+render(<Counter />);
+`}
+  solution={`
+function Counter() {
+const [count, setCount] = useState(0);
+
+return (
+<div>
+<h2>Count: {count}</h2>
+<button onClick={() => setCount(prevCount => prevCount + 1)}>Increment</button>
+<button onClick={() => setCount(prevCount => prevCount - 1)}>Decrement</button>
+</div>
+);
+}
+
+// Render the component
+render(<Counter />);
+`}
+/>
+
+### 2. Toggle Switch
+
+Create a `ToggleSwitch` component that toggles between "ON" and "OFF" states when clicked.
+
+<CodingChallenge
+  initialCode={`
+function ToggleSwitch() {
+  // Your code here
+}
+
+// Render the component
+render(<ToggleSwitch />);
+`}
+  solution={`
+function ToggleSwitch() {
+const [isOn, setIsOn] = useState(false);
+
+return (
+<button onClick={() => setIsOn(prevState => !prevState)}>
+{isOn ? 'ON' : 'OFF'}
+</button>
+);
+}
+
+// Render the component
+render(<ToggleSwitch />);
+`}
+/>
+
+### 3. Simple Form
+
+Create a `NameForm` component with an input field that updates its state as the user types, and displays the current input value below the form.
+
+<CodingChallenge
+  initialCode={`
+function NameForm() {
+  // Your code here
+}
+
+// Render the component
+render(<NameForm />);
+`}
+  solution={`
+function NameForm() {
+const [name, setName] = useState('');
+
+const handleChange = (event) => {
+setName(event.target.value);
+};
+
+return (
+<div>
+<input
+        type="text"
+        value={name}
+        onChange={handleChange}
+        placeholder="Enter your name"
+      />
+<p>Your name: {name}</p>
+</div>
+);
+}
+
+// Render the component
+render(<NameForm />);
+`}
+/>
+
+## Further Practice
+
+To deepen your understanding of React State:
+
+1. Create a component that uses multiple state variables.
+2. Build a todo list component that can add and remove items using state.
+3. Implement a form with multiple input fields, managing all fields with a single state object.
+
+Remember, understanding state is crucial for building interactive React applications. Keep practicing and experimenting with different state scenarios!

@@ -1,0 +1,260 @@
+import { Callout } from "nextra/components";
+
+# State Management Libraries in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  State management libraries provide solutions for managing application state
+  outside of React components. They offer centralized stores, predictable state
+  updates, and often come with developer tools for easier debugging and state
+  tracking.
+</Callout>
+
+## Detailed Explanation
+
+### Redux
+
+Redux is a predictable state container for JavaScript apps, often used with React. It helps you write applications that behave consistently, run in different environments, and are easy to test.
+
+**Key concepts**:
+
+- Single source of truth (the store)
+- State is read-only
+- Changes are made with pure functions (reducers)
+
+### Redux Toolkit
+
+Redux Toolkit is the official, opinionated, batteries-included toolset for efficient Redux development. It simplifies many common Redux use cases, including store setup, creating reducers, immutable update logic, and even creating entire "slices" of state at once.
+
+**Key features**:
+
+- Simplified store setup
+- Includes useful utilities like `createSlice`
+- Built-in support for immer for easy immutable updates
+
+### Zustand
+
+Zustand is a small, fast, and scalable bearbones state management solution. It has a simple API based on hooks, isn't boilerplate-heavy, and doesn't suffer from the performance overhead found in most Redux-based solutions.
+
+**Key features**:
+
+- Minimal API
+- No providers needed
+- Can be used with vanilla JS as well as React
+
+## Code Examples
+
+### Redux Example
+
+```jsx
+import { createStore } from "redux";
+import { Provider, useSelector, useDispatch } from "react-redux";
+
+// Reducer
+const counterReducer = (state = { count: 0 }, action) => {
+  switch (action.type) {
+    case "INCREMENT":
+      return { count: state.count + 1 };
+    case "DECREMENT":
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+};
+
+// Store
+const store = createStore(counterReducer);
+
+// Component
+function Counter() {
+  const count = useSelector(state => state.count);
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => dispatch({ type: "INCREMENT" })}>+</button>
+      <button onClick={() => dispatch({ type: "DECREMENT" })}>-</button>
+    </div>
+  );
+}
+
+// App
+function App() {
+  return (
+    <Provider store={store}>
+      <Counter />
+    </Provider>
+  );
+}
+```
+
+### Redux Toolkit Example
+
+```jsx
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { Provider, useSelector, useDispatch } from "react-redux";
+
+// Slice
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: { count: 0 },
+  reducers: {
+    increment: state => {
+      state.count += 1;
+    },
+    decrement: state => {
+      state.count -= 1;
+    }
+  }
+});
+
+// Store
+const store = configureStore({
+  reducer: counterSlice.reducer
+});
+
+// Component
+function Counter() {
+  const count = useSelector(state => state.count);
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => dispatch(counterSlice.actions.increment())}>
+        +
+      </button>
+      <button onClick={() => dispatch(counterSlice.actions.decrement())}>
+        -
+      </button>
+    </div>
+  );
+}
+
+// App
+function App() {
+  return (
+    <Provider store={store}>
+      <Counter />
+    </Provider>
+  );
+}
+```
+
+### Zustand Example
+
+```jsx
+import create from "zustand";
+
+// Store
+const useStore = create(set => ({
+  count: 0,
+  increment: () => set(state => ({ count: state.count + 1 })),
+  decrement: () => set(state => ({ count: state.count - 1 }))
+}));
+
+// Component
+function Counter() {
+  const { count, increment, decrement } = useStore();
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={increment}>+</button>
+      <button onClick={decrement}>-</button>
+    </div>
+  );
+}
+
+// App
+function App() {
+  return <Counter />;
+}
+```
+
+## Best Practices
+
+1. **Choose the Right Tool**: Select a state management library based on your application's complexity and team's familiarity.
+
+2. **Normalize State**: Keep your state normalized to avoid data duplication and inconsistencies.
+
+3. **Immutable Updates**: Always update state immutably to prevent unexpected behavior.
+
+4. **Use Selectors**: Implement selectors to efficiently derive data from your state.
+
+5. **Middleware for Side Effects**: Use middleware (like Redux-Thunk or Redux-Saga) for handling side effects.
+
+6. **DevTools Integration**: Utilize developer tools for debugging and time-travel debugging.
+
+7. **Modular State**: Organize your state into logical modules or slices for better maintainability.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Over-centralization:
+
+   - Mistake: Putting every piece of state in the global store.
+   - Why: This can lead to unnecessary complexity and performance issues.
+   - Solution: Only put truly global state in your store; keep component-specific state local.
+
+</Callout>
+
+<Callout>
+
+2. Deeply Nested State:
+
+   - Mistake: Creating deeply nested state structures.
+   - Why: This makes updates more complex and error-prone.
+   - Solution: Keep your state flat and normalized.
+
+</Callout>
+
+<Callout>
+
+3. Ignoring Performance:
+
+   - Mistake: Not optimizing renders in connected components.
+   - Why: This can lead to unnecessary re-renders and poor performance.
+   - Solution: Use memoization techniques and efficient selectors.
+
+</Callout>
+
+<Callout>
+
+4. Overusing Middleware:
+   - Mistake: Using middleware for simple synchronous operations.
+   - Why: This adds unnecessary complexity to your application.
+   - Solution: Only use middleware for complex async operations or side effects.
+
+</Callout>
+
+## Related Concepts
+
+1. **Flux Architecture**: The architectural pattern that inspired Redux.
+2. **Immutability**: A core concept in most state management solutions.
+3. **Observables**: Used in some state management libraries like MobX.
+4. **Context API**: React's built-in solution for passing data through the component tree.
+5. **Reselect**: A library for creating memoized selectors, often used with Redux.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Redux Documentation](https://redux.js.org/): Official documentation for Redux.
+
+2. [Redux Toolkit Documentation](https://redux-toolkit.js.org/): Official documentation for Redux Toolkit.
+
+3. [Zustand Documentation](https://github.com/pmndrs/zustand): GitHub repository and documentation for Zustand.
+
+4. [You Might Not Need Redux](https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367): A thoughtful article by Dan Abramov on when to use Redux.
+
+5. [Comparison of State Management Solutions](https://github.com/reduxjs/redux/issues/1287): A GitHub issue with a comprehensive comparison of state management solutions.
+
+6. [Redux Style Guide](https://redux.js.org/style-guide/style-guide): Best practices for Redux development.
+
+7. [Practical Redux](https://blog.isquaredsoftware.com/series/practical-redux/): A series of in-depth articles on Redux best practices and techniques.
+
+</Callout>

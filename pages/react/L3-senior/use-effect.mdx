@@ -1,0 +1,247 @@
+import { Callout } from "nextra/components";
+
+# useEffect Hook in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  The `useEffect` hook in React allows you to perform side effects in functional
+  components. It serves as a replacement for several lifecycle methods found in
+  class components and is a key part of the Hooks API.
+</Callout>
+
+## Detailed Explanation
+
+### What is useEffect?
+
+`useEffect` is a hook in React that allows you to perform side effects in functional components. Side effects can include data fetching, subscriptions, or manually changing the DOM.
+
+### Why does useEffect exist?
+
+`useEffect` exists to handle side effects in functional components. It provides a way to replicate lifecycle methods that were previously only available in class components.
+
+### For which purpose?
+
+**The main purposes of `useEffect` are**:
+
+1. Performing side effects after rendering
+2. Controlling when side effects run
+3. Cleaning up side effects
+
+### Why was it created in the first place?
+
+**`useEffect` was created to solve several problems**:
+
+1. Code duplication across different lifecycle methods in class components
+2. The difficulty of handling side effects in functional components
+3. The complexity of managing related code that was split across different lifecycle methods
+
+### When was it created?
+
+`useEffect` was introduced in React 16.8, which was released in February 2019. This release introduced Hooks, allowing state and other React features to be used in functional components.
+
+### Basic Usage
+
+```jsx
+import React, { useEffect, useState } from "react";
+
+function ExampleComponent() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // This effect runs after every render
+    fetchData().then(result => setData(result));
+  }, []); // Empty dependency array means this effect runs once on mount
+
+  return <div>{data ? <p>{data}</p> : <p>Loading...</p>}</div>;
+}
+```
+
+### Cleanup Functions
+
+Cleanup functions are return functions from effects that run before the component is removed from the UI and before re-running the effect on subsequent renders.
+
+#### What are cleanup functions?
+
+Cleanup functions are used to clean up side effects. They can be used to unsubscribe from subscriptions, cancel network requests, or clean up any other side effects that might lead to memory leaks.
+
+#### When to use a cleanup function?
+
+Use a cleanup function when your effect creates resources that need to be cleaned up. Common scenarios include:
+
+- Clearing timers (set by `setInterval` or `setTimeout`)
+- Unsubscribing from external data sources
+- Cancelling network requests
+
+Example with a cleanup function:
+
+```jsx
+useEffect(() => {
+  const subscription = someExternalDataSource.subscribe();
+
+  // Cleanup function
+  return () => {
+    subscription.unsubscribe();
+  };
+}, []);
+```
+
+### Lifecycle Methods
+
+Lifecycle methods are special methods that automatically get called as your component gets created, updated, or deleted.
+
+#### What are lifecycle methods?
+
+Lifecycle methods are functions that get called at different stages of a component's life. They allow you to run code at specific points in a component's existence.
+
+#### How was the lifecycle handled in Class Components?
+
+In class components, React provided several lifecycle methods:
+
+- Mounting: `constructor`, `render`, `componentDidMount`
+- Updating: `render`, `componentDidUpdate`
+- Unmounting: `componentWillUnmount`
+
+Example of lifecycle methods in a class component:
+
+```jsx
+class ExampleComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  componentDidMount() {
+    console.log("Component mounted");
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.count !== prevState.count) {
+      console.log("Count updated");
+    }
+  }
+
+  componentWillUnmount() {
+    console.log("Component will unmount");
+  }
+
+  render() {
+    return <div>{this.state.count}</div>;
+  }
+}
+```
+
+#### How is it handled in Functional Components?
+
+In functional components, the `useEffect` hook is used to handle side effects and replicate lifecycle behavior:
+
+```jsx
+function ExampleComponent() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log("Component mounted");
+    return () => console.log("Component will unmount");
+  }, []); // Runs once on mount, cleanup on unmount
+
+  useEffect(() => {
+    console.log("Count updated");
+  }, [count]); // Runs when count changes
+
+  return <div>{count}</div>;
+}
+```
+
+#### What control do we have over it?
+
+With `useEffect`, we have fine-grained control over when effects run:
+
+1. Run after every render: `useEffect(() => {})`
+2. Run only once after mount: `useEffect(() => {}, [])`
+3. Run when specific values change: `useEffect(() => {}, [dep1, dep2])`
+
+We can also control cleanup by returning a function from the effect.
+
+## Best Practices
+
+1. **Use Multiple Effects for Unrelated Logic**: Separate concerns by using multiple `useEffect` calls.
+2. **Be Careful with Object and Array Dependencies**: They can cause unnecessary effect runs. Consider using primitive values or memoization.
+3. **Avoid Infinite Loops**: Be cautious when setting state in an effect that depends on that state.
+4. **Use the Exhaustive Deps ESLint Rule**: This helps ensure all dependencies are correctly specified.
+5. **Cleanup When Necessary**: Always clean up subscriptions and async tasks to prevent memory leaks.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Missing Dependencies:
+
+   - Mistake: Not including all variables from the component scope that the effect uses.
+   - Why: This can lead to stale closures and bugs that are hard to track down.
+   - Solution: Include all variables from the component scope that the effect uses in the dependency array, or use the exhaustive-deps ESLint rule.
+
+</Callout>
+
+<Callout>
+
+2. Overusing useEffect:
+
+   - Mistake: Using `useEffect` for logic that doesn't involve side effects.
+   - Why: This can lead to unnecessary re-renders and complicates the component logic.
+   - Solution: Only use `useEffect` for true side effects. For calculations, consider using `useMemo` or moving the logic outside the component.
+
+</Callout>
+
+<Callout>
+
+3. Not Cleaning Up:
+
+   - Mistake: Forgetting to clean up subscriptions, timers, or other side effects.
+   - Why: This can lead to memory leaks or unexpected behavior.
+   - Solution: Always return a cleanup function from your effect when dealing with subscriptions, timers, or other long-living side effects.
+
+</Callout>
+
+<Callout>
+
+4. Incorrect Dependency Array:
+   - Mistake: Using an empty array `[]` when the effect actually depends on props or state.
+   - Why: This can lead to bugs where the effect doesn't re-run when it should.
+   - Solution: Carefully consider what your effect depends on and include those dependencies in the array.
+
+</Callout>
+
+## Related Concepts
+
+1. **useState**: Often used in conjunction with `useEffect` to manage and respond to state changes.
+2. **useLayoutEffect**: Similar to `useEffect`, but fires synchronously after all DOM mutations.
+3. **useMemo and useCallback**: Can be used to optimize the dependency array of `useEffect`.
+4. **Custom Hooks**: Often built using `useEffect` to encapsulate reusable side effect logic.
+5. **React.StrictMode**: Can cause effects to run twice in development to help spot issues.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [useEffect Documentation](https://react.dev/reference/react/useEffect):
+   Official React documentation on the useEffect hook from the new React docs.
+
+1. [Synchronizing with Effects](https://react.dev/learn/synchronizing-with-effects):
+   Comprehensive guide on understanding and using effects in the new React docs.
+
+1. [Lifecycle of Reactive Effects](https://react.dev/learn/lifecycle-of-reactive-effects):
+   Detailed explanation of the lifecycle of effects in React.
+
+1. [Removing Effect Dependencies](https://react.dev/learn/removing-effect-dependencies):
+   Guide on how to think about and manage effect dependencies.
+
+1. [Reusing Logic with Custom Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks):
+   Tutorial on creating custom hooks, which often use useEffect.
+
+1. [A Complete Guide to useEffect](https://overreacted.io/a-complete-guide-to-useeffect/):
+   Comprehensive article by Dan Abramov on understanding useEffect.
+
+1. [How to Fetch Data with React Hooks](https://www.robinwieruch.de/react-hooks-fetch-data):
+   Tutorial on using useEffect for data fetching.
+
+</Callout>

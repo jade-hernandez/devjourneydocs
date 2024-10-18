@@ -1,0 +1,186 @@
+import { Callout } from "nextra/components";
+
+# Concurrent Mode in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  Concurrent Mode is a set of new features in React that help apps stay
+  responsive and gracefully adjust to the user's device capabilities and network
+  speed. It allows React to interrupt a long-running render to handle a
+  high-priority event, making apps more responsive.
+</Callout>
+
+## Detailed Explanation
+
+### Concurrent Rendering
+
+Concurrent rendering is the core feature of Concurrent Mode. It allows React to work on multiple versions of the UI at the same time, which enables several key capabilities:
+
+1. **Interruptible Rendering**: React can pause rendering work to handle more urgent updates, then resume where it left off.
+
+2. **Prioritization**: Different updates can be assigned different priorities, ensuring that high-priority updates (like user input) are processed quickly.
+
+3. **Suspense**: Allows components to "wait" for something before rendering, with the ability to show fallback content during the wait.
+
+4. **Progressive Loading**: The ability to show a more complete version of the content as more data streams in, rather than an all-or-nothing approach.
+
+Key Concepts:
+
+- **Time Slicing**: The ability to split rendering work into chunks and spread it out over multiple frames.
+- **Suspense**: A mechanism for declaratively specifying loading states in the UI.
+- **Concurrent Renders**: The ability to render multiple versions of a component tree simultaneously.
+
+<Callout emoji='⚠️'>
+  Concurrent Mode is still an experimental feature. Always check the latest
+  React documentation for the current status and best practices.
+</Callout>
+
+## Code Examples
+
+### Basic Usage of Concurrent Mode
+
+```jsx
+import React, { Suspense } from "react";
+import { createRoot } from "react-dom";
+
+const root = createRoot(document.getElementById("root"));
+
+function App() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SlowComponent />
+    </Suspense>
+  );
+}
+
+root.render(<App />);
+```
+
+### Prioritizing Updates
+
+```jsx
+import React, { useState, useTransition } from "react";
+
+function App() {
+  const [count, setCount] = useState(0);
+  const [isPending, startTransition] = useTransition();
+
+  function handleClick() {
+    startTransition(() => {
+      setCount(c => c + 1);
+    });
+  }
+
+  return (
+    <div>
+      <button onClick={handleClick}>Increment</button>
+      {isPending ? " Loading..." : null}
+      <div>Count: {count}</div>
+    </div>
+  );
+}
+```
+
+### Suspense for Data Fetching
+
+```jsx
+import React, { Suspense } from "react";
+import { fetchUser } from "./api";
+
+const resource = fetchUser();
+
+function ProfileDetails() {
+  const user = resource.read();
+  return <h1>{user.name}</h1>;
+}
+
+function ProfilePage() {
+  return (
+    <Suspense fallback={<h1>Loading profile...</h1>}>
+      <ProfileDetails />
+    </Suspense>
+  );
+}
+```
+
+## Best Practices
+
+1. **Use Suspense Boundaries Wisely**: Place Suspense boundaries strategically to create a good loading experience.
+
+2. **Leverage useTransition**: Use `useTransition` for updates that may take a while but don't need to block the UI.
+
+3. **Implement Progressive Loading**: Design your app to show increasingly complete content as data loads.
+
+4. **Prioritize Critical Updates**: Use concurrent features to ensure that critical user interactions remain responsive.
+
+5. **Test Thoroughly**: Concurrent Mode can introduce new edge cases. Test your app thoroughly, especially under poor network conditions.
+
+6. **Consider Server-Side Rendering**: Concurrent Mode works well with server-side rendering for even better performance.
+
+7. **Profile and Optimize**: Use React's profiling tools to identify and optimize rendering bottlenecks.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Overusing Suspense:
+
+   - Mistake: Wrapping every component in Suspense.
+   - Why: This can lead to a poor user experience with too many loading indicators.
+   - Solution: Use Suspense judiciously, typically at layout boundaries.
+
+</Callout>
+
+<Callout>
+
+2. Ignoring Error Boundaries:
+
+   - Mistake: Not using Error Boundaries with Suspense.
+   - Why: This can lead to uncaught errors and broken UI states.
+   - Solution: Always pair Suspense with Error Boundaries for robust error handling.
+
+</Callout>
+
+<Callout>
+
+3. Misunderstanding Transitions:
+
+   - Mistake: Using transitions for every state update.
+   - Why: Some updates should be immediate for a responsive feel.
+   - Solution: Use transitions only for updates that may take a while but shouldn't block the UI.
+
+</Callout>
+
+<Callout>
+
+4. Neglecting Traditional Optimization Techniques:
+   - Mistake: Relying solely on Concurrent Mode for performance.
+   - Why: Concurrent Mode is not a silver bullet for all performance issues.
+   - Solution: Continue to use traditional optimization techniques alongside Concurrent Mode features.
+
+</Callout>
+
+## Related Concepts
+
+1. **React Fiber**: The underlying architecture that enables Concurrent Mode.
+2. **Suspense**: A key feature of Concurrent Mode for handling asynchronous operations.
+3. **Time Slicing**: The technique React uses to split work into small chunks.
+4. **Render-as-You-Fetch**: A pattern enabled by Concurrent Mode for improved data fetching.
+5. **Algebraic Effects**: A computer science concept that inspired some aspects of Concurrent Mode.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [Concurrent Rendering in React](https://react.dev/blog/2022/03/29/react-v18#what-is-concurrent-react): Official React documentation on Concurrent Rendering.
+
+2. [useTransition Hook](https://react.dev/reference/react/useTransition): Detailed explanation of the useTransition hook.
+
+3. [Suspense for Data Fetching](https://react.dev/reference/react/Suspense): React documentation on using Suspense for data fetching.
+
+4. [Concurrent Mode Adoption](https://react.dev/blog/2022/03/29/react-v18#gradually-adopting-concurrent-features): Guide on how to gradually adopt Concurrent Mode features.
+
+5. [Inside React Fiber](https://github.com/acdlite/react-fiber-architecture): A deep dive into React Fiber, the architecture enabling Concurrent Mode.
+
+</Callout>

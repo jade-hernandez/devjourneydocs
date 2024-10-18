@@ -1,0 +1,215 @@
+import { Callout } from "nextra/components";
+
+# Code Splitting in React
+
+## Brief Overview
+
+<Callout emoji='💡'>
+  Code Splitting is a technique used to improve the performance of React
+  applications by splitting the bundle into smaller chunks and loading them on
+  demand. This is achieved through dynamic imports and React's built-in
+  `React.lazy` and `Suspense` features.
+</Callout>
+
+## Detailed Explanation
+
+### Dynamic Imports
+
+Dynamic imports allow you to load JavaScript modules (including React components) on demand, rather than loading everything upfront. This can significantly improve the initial load time of your application.
+
+In JavaScript, you can use the `import()` function to dynamically import a module:
+
+```javascript
+import("./MyComponent").then(module => {
+  const MyComponent = module.default;
+  // Use MyComponent
+});
+```
+
+### React.lazy and Suspense
+
+React provides a more convenient way to use dynamic imports for components through the `React.lazy` function and `Suspense` component.
+
+- **React.lazy**: This function lets you render a dynamic import as a regular component.
+- **Suspense**: This component lets you specify a loading indicator while waiting for the lazy component to load.
+
+Together, they provide a seamless way to implement code splitting in React applications.
+
+## Code Examples
+
+### Basic Usage of React.lazy and Suspense
+
+Here's a simple example of how to use `React.lazy` and `Suspense`:
+
+```jsx
+import React, { Suspense } from "react";
+
+const OtherComponent = React.lazy(() => import("./OtherComponent"));
+
+function MyComponent() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <OtherComponent />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+### Code Splitting with React Router
+
+Here's an example of how to use code splitting with React Router:
+
+```jsx
+import React, { Suspense } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+const Home = React.lazy(() => import("./routes/Home"));
+const About = React.lazy(() => import("./routes/About"));
+const Contact = React.lazy(() => import("./routes/Contact"));
+
+function App() {
+  return (
+    <Router>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <Route
+            exact
+            path='/'
+            component={Home}
+          />
+          <Route
+            path='/about'
+            component={About}
+          />
+          <Route
+            path='/contact'
+            component={Contact}
+          />
+        </Switch>
+      </Suspense>
+    </Router>
+  );
+}
+```
+
+### Error Boundaries with Code Splitting
+
+It's a good practice to use Error Boundaries with code splitting to handle errors in lazy-loaded components:
+
+```jsx
+import React, { Suspense } from "react";
+
+const OtherComponent = React.lazy(() => import("./OtherComponent"));
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children;
+  }
+}
+
+function MyComponent() {
+  return (
+    <div>
+      <ErrorBoundary>
+        <Suspense fallback={<div>Loading...</div>}>
+          <OtherComponent />
+        </Suspense>
+      </ErrorBoundary>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+1. **Route-based Splitting**: Start with route-based code splitting as it usually provides the best bang for your buck.
+
+2. **Anticipate User Actions**: Try to predict where users are likely to navigate and preload those components.
+
+3. **Named Exports**: When using `React.lazy`, remember it currently only supports default exports.
+
+4. **Avoid Over-splitting**: Don't split your code into too many small chunks, as this can actually decrease performance due to the overhead of multiple requests.
+
+5. **Use Error Boundaries**: Always wrap your lazy-loaded components in Error Boundaries to gracefully handle loading failures.
+
+6. **Meaningful Loading States**: Provide informative loading states in your Suspense fallback to improve user experience.
+
+7. **Performance Monitoring**: Use tools like Chrome DevTools and React DevTools to monitor the impact of your code splitting.
+
+## Common Pitfalls
+
+<Callout>
+
+1. Overusing Code Splitting:
+
+   - Mistake: Applying code splitting to every small component.
+   - Why: This can lead to too many small chunks and actually decrease performance.
+   - Solution: Focus on larger, less frequently used parts of your application.
+
+</Callout>
+
+<Callout>
+
+2. Forgetting Server-Side Rendering:
+
+   - Mistake: Not accounting for server-side rendering when using `React.lazy`.
+   - Why: `React.lazy` and `Suspense` are not yet supported for server-side rendering.
+   - Solution: Use a library like Loadable Components for SSR support with code splitting.
+
+</Callout>
+
+<Callout>
+
+3. Ignoring Loading Performance:
+
+   - Mistake: Not optimizing the loading experience for users.
+   - Why: Poor loading experiences can negatively impact user perception of your app.
+   - Solution: Use meaningful loading indicators and consider techniques like skeleton screens.
+
+</Callout>
+
+<Callout>
+
+4. Not Handling Errors:
+   - Mistake: Failing to handle potential errors in lazy-loaded components.
+   - Why: Network issues or other problems can cause lazy loading to fail.
+   - Solution: Always use Error Boundaries with lazy-loaded components.
+
+</Callout>
+
+## Related Concepts
+
+1. **Webpack**: The most common bundler used with React, which handles the actual code splitting.
+2. **Performance Optimization**: Code splitting is part of the broader topic of React app performance optimization.
+3. **React Router**: Often used in conjunction with code splitting for route-based splitting.
+4. **Error Boundaries**: Used to catch errors in lazy-loaded components.
+5. **React Suspense**: A key feature for handling asynchronous operations, including code splitting.
+
+## Further Resources
+
+<Callout emoji='📚'>
+
+1. [React.lazy](https://react.dev/reference/react/lazy): React documentation for the lazy function.
+
+2. [Suspense](https://react.dev/reference/react/Suspense): React documentation for the Suspense component.
+
+3. [Lazy Loading Routes](https://reactrouter.com/en/main/route/lazy): React Router documentation on lazy loading routes.
+
+4. [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/): Webpack's guide on code splitting.
+
+</Callout>

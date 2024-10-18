@@ -1,0 +1,155 @@
+import { Callout } from "nextra/components";
+import { Quiz } from "../../../components/Quiz";
+import { ProgressTracker } from "../../../components/ProgressTracker";
+import { CodingChallenge } from "../../../components/CodingChallenge";
+
+# React Components - Exercises
+
+<ProgressTracker
+  section={1}
+  completedTasks={2}
+  totalTasks={5}
+/>
+
+<Callout emoji='📚'>
+  Before attempting these exercises, make sure you've read through the [React
+  Components](http://localhost:3000/react/L1-junior/components) documentation.
+</Callout>
+
+## Quiz
+
+Test your understanding of React Components:
+
+<Quiz
+  question='What is the main advantage of using components in React?'
+  options={[
+    "Faster rendering",
+    "Code reusability",
+    "Automatic state management",
+    "Direct DOM manipulation"
+  ]}
+  correctAnswer='Code reusability'
+/>
+
+<Quiz
+  question='Which of the following is TRUE about functional components?'
+  options={[
+    "They must contain a render method",
+    "They can't manage state",
+    "They are defined as JavaScript functions",
+    "They are less efficient than class components"
+  ]}
+  correctAnswer='They are defined as JavaScript functions'
+/>
+
+<Quiz
+  question='How do you typically pass data to a component?'
+  options={[
+    "Through global variables",
+    "Using props",
+    "Via the state object",
+    "With event listeners"
+  ]}
+  correctAnswer='Using props'
+/>
+
+## Coding Challenges
+
+### 1. Create a Functional Component
+
+Create a functional component called `Welcome` that takes a `name` prop and renders a welcome message.
+
+<CodingChallenge
+  initialCode={`
+function Welcome() {
+  // Your code here
+}
+
+// Render the component
+render(<Welcome name="React Learner" />);
+`}
+  solution={`
+function Welcome({ name }) {
+return <h1>Welcome, {name}! We're glad you're here.</h1>;
+}
+
+// Render the component
+render(<Welcome name="React Learner" />);
+`}
+/>
+
+### 2. Component with Multiple Props
+
+Create a `UserCard` component that accepts `name`, `age`, and `occupation` as props and displays them in a structured format.
+
+<CodingChallenge
+  initialCode={`
+function UserCard() {
+  // Your code here
+}
+
+// Render the component
+render(<UserCard name="Alice Johnson" age={28} occupation="Software Developer" />);
+`}
+  solution={`
+function UserCard({ name, age, occupation }) {
+return (
+<div className="user-card">
+<h2>{name}</h2>
+<p>Age: {age}</p>
+<p>Occupation: {occupation}</p>
+</div>
+);
+}
+
+// Render the component
+render(<UserCard name="Alice Johnson" age={28} occupation="Software Developer" />);
+`}
+/>
+
+### 3. Component Composition
+
+Create a `ParentComponent` that renders two instances of a `ChildComponent`. The `ChildComponent` should accept a `message` prop.
+
+<CodingChallenge
+  initialCode={`
+function ChildComponent() {
+  // Your code here
+}
+
+function ParentComponent() {
+// Your code here
+}
+
+// Render the ParentComponent
+render(<ParentComponent />);
+`}
+  solution={`
+function ChildComponent({ message }) {
+return <p>{message}</p>;
+}
+
+function ParentComponent() {
+return (
+<div>
+<h1>Parent Component</h1>
+<ChildComponent message="I'm the first child" />
+<ChildComponent message="I'm the second child" />
+</div>
+);
+}
+
+// Render the ParentComponent
+render(<ParentComponent />);
+`}
+/>
+
+## Further Practice
+
+To deepen your understanding of React Components:
+
+1. Create a component that uses conditional rendering based on props.
+2. Build a list component that renders an array of items passed as a prop.
+3. Experiment with creating a reusable button component that accepts custom styles and click handlers as props.
+
+Remember, components are the building blocks of React applications. Practice creating and composing components to build your React skills!

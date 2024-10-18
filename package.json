@@ -1,14 +1,7 @@
 {
   "name": "documentation-website",
+  "type": "module",
   "packageManager": "yarn@4.4.1",
-  "dependencies": {
-    "next": "^14.2.9",
-    "nextra": "^2.13.4",
-    "nextra-theme-docs": "^2.13.4",
-    "prism-react-renderer": "^2.4.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -16,7 +9,25 @@
     "prettier:check": "prettier --check --config ./.prettierrc '{public,src,pages,components}/**/*.{htm,html,js,jsx,ts,tsx,css,md,mdx}'",
     "prettier:fix": "prettier --write --list-different --config ./.prettierrc '{public,src,pages,components}/**/*.{htm,html,js,jsx,ts,tsx,css,md,mdx}'"
   },
+  "dependencies": {
+    "@mapbox/rehype-prism": "^0.9.0",
+    "@mdx-js/loader": "^3.0.1",
+    "@mdx-js/react": "^3.0.1",
+    "@next/mdx": "^14.2.14",
+    "codehike": "^1.0.2",
+    "fs": "^0.0.1-security",
+    "next": "^14.2.9",
+    "nextra": "^3.0.7",
+    "nextra-theme-docs": "^3.0.7",
+    "prism-react-renderer": "^2.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-live": "^4.1.7",
+    "remark-gfm": "^4.0.0",
+    "yargs": "^17.7.2"
+  },
   "devDependencies": {
+    "@types/mapbox__rehype-prism": "^0",
     "@types/node": "^22.5.4",
     "@types/react": "^18.3.5",
     "prettier": "^3.3.3",
