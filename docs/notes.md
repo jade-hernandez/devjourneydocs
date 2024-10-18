@@ -1,5 +1,24 @@
 # Notes
 
+## Things that might come in handy
+
+- <https://nextra.site/docs> - The framework used to build this app
+- <https://ui.shadcn.com/docs> - A UI component library for React
+- <https://www.framer.com/motion/introduction/> - A library for animations in React
+
+## General to do list
+
+- [ ] Decide whether to have the exercises in the same page as the lessons or in a separate page
+
+- [ ] We need to create a nice looking landing page for the app -> `src/pages/index.mdx`
+
+## Playground for the exercises
+
+- [ ] See: <https://sandpack.codesandbox.io/docs>
+- [ ] See: <https://react.dev/learn/your-first-component>
+
+## Exercises to do list - might become irrelevant 💡
+
 - [ ] Add a link in the lesson pages that goes to the corresponding exercise page
 - [ ] Refactor the `Quiz` component to use the correct semantic HTML elements
   - using: `form`,`label`,`input`, `radio`;

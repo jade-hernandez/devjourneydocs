@@ -4,7 +4,10 @@ import { Callout } from "nextra/components";
 
 ## Brief Overview
 
-<Callout emoji='💡'>
+<Callout
+  type='info'
+  emoji='💡'
+>
   React is a JavaScript library for building user interfaces, particularly for
   single-page applications. It allows developers to create reusable UI
   components that manage their own state, resulting in complex UIs from small,
@@ -28,7 +31,10 @@ React was introduced to solve several problems in web development:
 
 ### React vs. Vanilla JavaScript and HTML
 
-<Callout emoji='🔍'>
+<Callout
+  type='info'
+  emoji='🔍'
+>
   Unlike vanilla JavaScript and HTML, where developers often directly manipulate
   the DOM, React provides a declarative approach. You describe how your UI
   should look based on the current application state, and React efficiently
@@ -45,7 +51,10 @@ React was introduced to solve several problems in web development:
 
 ### Virtual DOM
 
-<Callout emoji='🚀'>
+<Callout
+  type='info'
+  emoji='🚀'
+>
   The Virtual DOM is a lightweight copy of the actual DOM. When state changes
   occur, React first updates this virtual DOM, compares it with the previous
   version (a process called "diffing"), and then efficiently updates only the
@@ -66,7 +75,7 @@ Since its introduction, React has evolved significantly:
 
 ### 1. "Hello, World!" in React
 
-```js copy showLineNumbers
+```js copy
 import React from "react";
 import ReactDOM from "react-dom";
 
@@ -81,7 +90,7 @@ This example demonstrates the basic structure of a React component and how it's 
 
 ### 2. Component-Based Architecture
 
-```jsx
+```js copy
 import React from "react";
 
 function Header() {
@@ -119,7 +128,7 @@ export default App;
 
 React:
 
-```jsx
+```js copy
 import React, { useState } from "react";
 
 function Counter() {
@@ -136,7 +145,7 @@ function Counter() {
 
 Vanilla JavaScript:
 
-```javascript
+```js copy
 let count = 0;
 const counterElement = document.getElementById("counter");
 const buttonElement = document.getElementById("button");

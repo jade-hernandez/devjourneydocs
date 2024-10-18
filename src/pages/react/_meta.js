@@ -1,6 +1,6 @@
 export default {
-  "L1-junior": "L1 - Junior",
-  "L2-mid": "L2 - Mid level",
-  "L3-senior": "L3 - Senior",
-  "L4-lead": "L4 - Lead"
+  junior: "Junior",
+  mid: "Mid level",
+  senior: "Senior",
+  lead: "Lead"
 };
