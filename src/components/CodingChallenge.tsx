@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
 import { LiveProvider, LiveError, LivePreview } from "react-live";
-import styles from "../pages/Quiz.module.css";
+import styles from "@/src/styles/coding-challenge.module.css";
 
 const LiveEditorWithNoSSR = dynamic(
   () => import("react-live").then(mod => mod.LiveEditor),
@@ -19,10 +19,10 @@ export const CodingChallenge: React.FC<CodingChallengeProps> = ({
   initialCode,
   solution
 }) => {
-  const [editorCode, setEditorCode] = useState(initialCode);
-  const [executedCode, setExecutedCode] = useState(initialCode);
-  const [showSolution, setShowSolution] = useState(false);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [editorCode, setEditorCode] = React.useState(initialCode);
+  const [executedCode, setExecutedCode] = React.useState(initialCode);
+  const [showSolution, setShowSolution] = React.useState(false);
+  const [isCorrect, setIsCorrect] = React.useState<boolean | null>(null);
 
   const handleToggleSolution = () => {
     setShowSolution(!showSolution);

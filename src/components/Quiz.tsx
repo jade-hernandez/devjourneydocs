@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "../pages/Quiz.module.css";
+import styles from "@/styles/quiz.module.css";
 
 interface QuizProps {
   question: string;
